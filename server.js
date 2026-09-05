@@ -1,3 +1,4 @@
+const { openDatabase, saveDatabase, closeDatabase } = require('./database');
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
@@ -176,6 +177,344 @@ app.get("/api/account/:userId/wallet", async (req, res) => {
 });
 
 /* ===== END ACCOUNT + WALLET FOUNDATION ===== */
+
+/* ===== USER ROOMS API ===== */
+app.post("/api/rooms", async (req, res) => {
+  try {
+    const userId = String(req.body?.userId || "").trim();
+    const name = String(req.body?.name || "").trim();
+    const description =
+      req.body?.description == null
+        ? null
+        : String(req.body.description).trim();
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: "USER_ID_REQUIRED"
+      });
+    }
+
+    if (!name) {
+      return res.status(400).json({
+        success: false,
+        error: "ROOM_NAME_REQUIRED"
+      });
+    }
+
+    if (name.length < 2 || name.length > 100) {
+      return res.status(400).json({
+        success: false,
+        error: "ROOM_NAME_LENGTH_INVALID"
+      });
+    }
+
+    const db = await openDatabase();
+
+    const userResult = db.exec(`
+      SELECT user_id, username, display_name, status
+      FROM users
+      WHERE user_id = ?
+      LIMIT 1
+    `, [userId]);
+
+    if (!userResult.length || !userResult[0].values.length) {
+      await closeDatabase();
+      return res.status(404).json({
+        success: false,
+        error: "USER_NOT_FOUND"
+      });
+    }
+
+    const user = userResult[0].values[0];
+
+    if (user[3] !== "active") {
+      await closeDatabase();
+      return res.status(403).json({
+        success: false,
+        error: "USER_NOT_ACTIVE"
+      });
+    }
+
+    const roomId = `room_${require("crypto").randomUUID()}`;
+
+    db.run(`
+      INSERT INTO rooms (
+        room_id,
+        owner_user_id,
+        name,
+        description
+      )
+      VALUES (?, ?, ?, ?)
+    `, [
+      roomId,
+      userId,
+      name,
+      description
+    ]);
+
+    saveDatabase();
+    await closeDatabase();
+
+    return res.status(201).json({
+      success: true,
+      room: {
+        roomId,
+        ownerUserId: userId,
+        ownerName: user[2] || user[1],
+        name,
+        description,
+        status: "active"
+      }
+    });
+  } catch (error) {
+    console.error("ROOM_CREATE_ERROR:", error.message);
+    return res.status(500).json({
+      success: false,
+      error: "ROOM_CREATE_FAILED"
+    });
+  }
+});
+
+/* ===== USER ROOMS LIST API ===== */
+app.get("/api/rooms", async (req, res) => {
+  try {
+    const userId = String(req.query?.userId || "").trim();
+
+    const db = await openDatabase();
+
+    let result;
+
+    if (userId) {
+      result = db.exec(`
+        SELECT
+          room_id,
+          owner_user_id,
+          name,
+          description,
+          status,
+          created_at,
+          updated_at
+        FROM rooms
+        WHERE owner_user_id = ?
+        ORDER BY created_at DESC
+      `, [userId]);
+    } else {
+      result = db.exec(`
+        SELECT
+          room_id,
+          owner_user_id,
+          name,
+          description,
+          status,
+          created_at,
+          updated_at
+        FROM rooms
+        WHERE status = 'active'
+        ORDER BY created_at DESC
+      `);
+    }
+
+    await closeDatabase();
+
+    const rows = result.length ? result[0].values : [];
+
+    return res.json({
+      success: true,
+      rooms: rows.map(row => ({
+        roomId: row[0],
+        ownerUserId: row[1],
+        name: row[2],
+        description: row[3],
+        status: row[4],
+        createdAt: row[5],
+        updatedAt: row[6]
+      }))
+    });
+  } catch (error) {
+    console.error("ROOM_LIST_ERROR:", error.message);
+    return res.status(500).json({
+      success: false,
+      error: "ROOM_LIST_FAILED"
+    });
+  }
+});
+
+/* ===== ROOM MANAGEMENT API ===== */
+app.put("/api/rooms/:roomId", async (req, res) => {
+  try {
+    const roomId = String(req.params.roomId || "").trim();
+    const userId = String(req.body?.userId || "").trim();
+    const name =
+      req.body?.name == null ? null : String(req.body.name).trim();
+    const description =
+      req.body?.description == null
+        ? null
+        : String(req.body.description).trim();
+
+    if (!roomId) {
+      return res.status(400).json({
+        success: false,
+        error: "ROOM_ID_REQUIRED"
+      });
+    }
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: "USER_ID_REQUIRED"
+      });
+    }
+
+    if (name !== null && (name.length < 2 || name.length > 100)) {
+      return res.status(400).json({
+        success: false,
+        error: "ROOM_NAME_LENGTH_INVALID"
+      });
+    }
+
+    const db = await openDatabase();
+
+    const existing = db.exec(`
+      SELECT room_id, owner_user_id, name, description, status
+      FROM rooms
+      WHERE room_id = ?
+      LIMIT 1
+    `, [roomId]);
+
+    if (!existing.length || !existing[0].values.length) {
+      await closeDatabase();
+      return res.status(404).json({
+        success: false,
+        error: "ROOM_NOT_FOUND"
+      });
+    }
+
+    const room = existing[0].values[0];
+
+    if (room[1] !== userId) {
+      await closeDatabase();
+      return res.status(403).json({
+        success: false,
+        error: "ROOM_OWNER_REQUIRED"
+      });
+    }
+
+    const nextName = name === null ? room[2] : name;
+    const nextDescription =
+      description === null ? room[3] : description;
+
+    db.run(`
+      UPDATE rooms
+      SET
+        name = ?,
+        description = ?,
+        updated_at = CURRENT_TIMESTAMP
+      WHERE room_id = ?
+        AND owner_user_id = ?
+    `, [
+      nextName,
+      nextDescription,
+      roomId,
+      userId
+    ]);
+
+    saveDatabase();
+    await closeDatabase();
+
+    return res.json({
+      success: true,
+      room: {
+        roomId,
+        ownerUserId: userId,
+        name: nextName,
+        description: nextDescription,
+        status: room[4]
+      }
+    });
+  } catch (error) {
+    console.error("ROOM_UPDATE_ERROR:", error.message);
+    return res.status(500).json({
+      success: false,
+      error: "ROOM_UPDATE_FAILED"
+    });
+  }
+});
+
+app.delete("/api/rooms/:roomId", async (req, res) => {
+  try {
+    const roomId = String(req.params.roomId || "").trim();
+    const userId = String(req.body?.userId || "").trim();
+
+    if (!roomId) {
+      return res.status(400).json({
+        success: false,
+        error: "ROOM_ID_REQUIRED"
+      });
+    }
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: "USER_ID_REQUIRED"
+      });
+    }
+
+    const db = await openDatabase();
+
+    const existing = db.exec(`
+      SELECT room_id, owner_user_id, name
+      FROM rooms
+      WHERE room_id = ?
+      LIMIT 1
+    `, [roomId]);
+
+    if (!existing.length || !existing[0].values.length) {
+      await closeDatabase();
+      return res.status(404).json({
+        success: false,
+        error: "ROOM_NOT_FOUND"
+      });
+    }
+
+    const room = existing[0].values[0];
+
+    if (room[1] !== userId) {
+      await closeDatabase();
+      return res.status(403).json({
+        success: false,
+        error: "ROOM_OWNER_REQUIRED"
+      });
+    }
+
+    db.run(`
+      UPDATE rooms
+      SET
+        status = 'deleted',
+        updated_at = CURRENT_TIMESTAMP
+      WHERE room_id = ?
+        AND owner_user_id = ?
+    `, [roomId, userId]);
+
+    saveDatabase();
+    await closeDatabase();
+
+    return res.json({
+      success: true,
+      room: {
+        roomId,
+        name: room[2],
+        status: "deleted"
+      }
+    });
+  } catch (error) {
+    console.error("ROOM_DELETE_ERROR:", error.message);
+    return res.status(500).json({
+      success: false,
+      error: "ROOM_DELETE_FAILED"
+    });
+  }
+});
 
 /* ===== PLATFORM HEALTH ===== */
 app.get("/api/health", (req, res) => {
@@ -514,14 +853,33 @@ app.get("/api/malik/health", async (req, res) => {
 
 app.post("/api/malik/chat", async (req, res) => {
     try {
-        const response = await fetch(process.env.MALIK_BRIDGE_URL || "http://127.0.0.1:3000/api/consultant/chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                message: req.body?.message || "",
-                history: req.body?.history || []
-            })
-        });
+        const message = String(req.body?.message || "").trim();
+
+        if (!message) {
+            return res.status(400).json({
+                success: false,
+                reply: "من فضلك اكتب سؤالك للمستشار مالك."
+            });
+        }
+
+        const userId =
+            String(req.body?.userId || "").trim() ||
+            "lexbridge-local-user";
+
+        const response = await fetch(
+            process.env.MALIK_BRIDGE_URL ||
+            "http://127.0.0.1:5050/api/free-consultation",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    message,
+                    userId
+                })
+            }
+        );
 
         const text = await response.text();
 
@@ -529,15 +887,20 @@ app.post("/api/malik/chat", async (req, res) => {
         try {
             data = JSON.parse(text);
         } catch {
-            data = { success:false, reply:text };
+            data = {
+                success: false,
+                reply: text
+            };
         }
 
         res.status(response.status).json(data);
+
     } catch (error) {
         console.error("Malik bridge error:", error.message);
+
         res.status(503).json({
-            success:false,
-            reply:"خدمة المستشار مالك غير متاحة حالياً."
+            success: false,
+            reply: "خدمة المستشار مالك غير متاحة حالياً."
         });
     }
 });

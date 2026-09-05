@@ -876,6 +876,8 @@ let socket = null;
 let joined = false;
 let currentRole = "host";
 let currentUser = "";
+let currentUserId = localStorage.getItem("LEXBRIDGE_USER_ID") || "";
+let accountActive = Boolean(currentUserId);
 let isLive = false;
 let localStream = null;
 let peerConnections = new Map();
@@ -952,6 +954,86 @@ function selectRoom(roomId, roomName){
   });
 
   addMessage("📍 تم اختيار غرفة: " + ROOM_NAME + ". اضغط دخول الغرفة الآن.", "system");
+}
+
+
+async function loadDatabaseRooms() {
+  try {
+    const response = await fetch(
+      (window.LEXBRIDGE_BACKEND_URL || "") + "/api/rooms"
+    );
+
+    if (!response.ok) {
+      throw new Error("ROOMS_API_HTTP_" + response.status);
+    }
+
+    const data = await response.json();
+
+    if (!data.success || !Array.isArray(data.rooms)) {
+      throw new Error("ROOMS_API_INVALID_RESPONSE");
+    }
+
+    const databaseRooms = data.rooms
+      .filter(room => room && room.status === "active")
+      .map(room => ({
+        id: String(room.roomId),
+        name: String(room.name || "غرفة بدون اسم"),
+        description: String(room.description || ""),
+        ownerUserId: String(room.ownerUserId || ""),
+        databaseRoom: true,
+        featured: false
+      }));
+
+    const existingIds = new Set(
+      Array.from(document.querySelectorAll(".room-choice"))
+        .map(button => String(button.dataset.roomId || ""))
+    );
+
+    const grid = document.querySelector("#roomsGrid");
+
+    if (!grid) {
+      console.warn("ROOMS_GRID_NOT_FOUND");
+      return;
+    }
+
+    databaseRooms
+      .filter(room => !existingIds.has(room.id))
+      .forEach(room => {
+        const button = document.createElement("button");
+
+        button.type = "button";
+        button.className = "control-btn room-choice";
+        button.dataset.roomId = room.id;
+        button.dataset.roomName = room.name;
+        button.style.width = "100%";
+
+        button.innerHTML =
+          "🎥 <strong>" +
+          room.name.replace(/</g, "&lt;").replace(/>/g, "&gt;") +
+          "</strong>" +
+          (
+            room.description
+              ? "<br><span>" +
+                room.description
+                  .replace(/</g, "&lt;")
+                  .replace(/>/g, "&gt;") +
+                "</span>"
+              : ""
+          );
+
+        grid.appendChild(button);
+      });
+
+    console.log(
+      "DATABASE_ROOMS_LOADED:",
+      databaseRooms.length
+    );
+  } catch (error) {
+    console.error(
+      "DATABASE_ROOMS_LOAD_ERROR:",
+      error.message
+    );
+  }
 }
 
 function renderRoomsDirectory(rooms){
@@ -1148,8 +1230,9 @@ function connectSocket(){
     if(data && data.text) addMessage(data.text, "system");
   });
 
-  socket.on("rooms-directory", rooms => {
+  socket.on("rooms-directory", async rooms => {
     renderRoomsDirectory(rooms);
+    await loadDatabaseRooms();
   });
 
   socket.on("room-state", state => {
@@ -1301,6 +1384,45 @@ joinBtn.addEventListener("click", async () => {
   if(currentUser.length > 50){
     userName.focus();
     addMessage("⚠️ اسم المستخدم يجب ألا يتجاوز 50 حرفًا.", "system");
+    return;
+  }
+
+  try {
+    const accountResponse = await fetch(
+      (window.LEXBRIDGE_BACKEND_URL || "") + "/api/account",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          username: currentUser,
+          displayName: currentUser
+        })
+      }
+    );
+
+    const accountData = await accountResponse.json();
+
+    if(!accountResponse.ok || !accountData.success || !accountData.account?.userId){
+      addMessage("⚠️ تعذر تفعيل الحساب.", "system");
+      return;
+    }
+
+    currentUserId = accountData.account.userId;
+    accountActive = true;
+    localStorage.setItem("LEXBRIDGE_USER_ID", currentUserId);
+    localStorage.setItem("LEXBRIDGE_USERNAME", currentUser);
+
+    addMessage(
+      accountData.account.created
+        ? "✅ تم إنشاء حسابك وتفعيل المحفظة."
+        : "✅ تم استرجاع حسابك وتفعيل الجلسة.",
+      "system"
+    );
+  } catch(error) {
+    console.error("ACCOUNT_ACTIVATION_ERROR:", error);
+    addMessage("⚠️ تعذر الوصول إلى خدمة الحساب.", "system");
     return;
   }
 

@@ -38,6 +38,21 @@ async function openDatabase() {
             updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
         );
 
+        CREATE TABLE IF NOT EXISTS rooms (
+            room_id TEXT PRIMARY KEY,
+            owner_user_id TEXT NOT NULL,
+            name TEXT NOT NULL,
+            description TEXT,
+            status TEXT NOT NULL DEFAULT 'active',
+            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY(owner_user_id) REFERENCES users(user_id)
+        );
+
+        CREATE INDEX IF NOT EXISTS
+        idx_rooms_owner
+        ON rooms(owner_user_id);
+
         CREATE TABLE IF NOT EXISTS wallets (
             wallet_id TEXT PRIMARY KEY,
             user_id TEXT NOT NULL UNIQUE,
