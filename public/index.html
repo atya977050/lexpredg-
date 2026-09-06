@@ -1878,7 +1878,18 @@ document.querySelectorAll("[data-gift]").forEach(button => {
       return;
     }
 
-    socket.emit("gift", button.dataset.gift);
+    // خصم التكلفة عند إرسال الهدية
+    const giftPrices = { "🌹 وردة": 10, "💎 ماسة": 50, "🚀 صاروخ": 200 };
+    const giftName = button.dataset.gift;
+    const cost = giftPrices[giftName] || 20;
+    
+    if(userCoins < cost) {
+      alert("⚠️ رصيد المحفظة غير كافٍ لإرسال هذه الهدية. يرجى شحن الرصيد.");
+      return;
+    }
+    userCoins -= cost;
+    updateWalletDisplay();
+    socket.emit("gift", giftName);
   });
 });
 
@@ -2040,6 +2051,14 @@ connectSocket();
     </div>
 
     <div class="lex-account-body">
+      <!-- ===== محفظة النقود الرقمية ===== -->
+      <div style="background: #252538; padding: 12px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #444; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <div style="font-size: 12px; color: #aaa;">🪙 رصيد المحفظة</div>
+          <div id="lexWalletCoins" style="font-size: 18px; font-weight: bold; color: #f1c40f;">1,000 نقطة</div>
+        </div>
+        <button id="lexTopUpBtn" type="button" style="background: #27ae60; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px;">💳 شحن الرصيد</button>
+      </div>
 
       <div class="lex-account-row">
         <div class="lex-account-label">👤 اسم المستخدم</div>
@@ -2080,6 +2099,30 @@ connectSocket();
 
 <script>
 /* ===== LEX LIVE ACCOUNT WINDOW LOGIC ===== */
+
+// ===== نظام المحفظة الرقمية والرصيد =====
+let userCoins = Number(localStorage.getItem("LEXBRIDGE_COINS") || 1000);
+
+function updateWalletDisplay() {
+  const coinsEl = document.getElementById("lexWalletCoins");
+  if(coinsEl) coinsEl.textContent = userCoins.toLocaleString() + " نقطة";
+  localStorage.setItem("LEXBRIDGE_COINS", userCoins);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const topUpBtn = document.getElementById("lexTopUpBtn");
+  if(topUpBtn) {
+    topUpBtn.addEventListener("click", () => {
+      const add = prompt("أدخل عدد النقود المراد شحنها للمحفظة:", "5000");
+      if(add && !isNaN(add) && Number(add) > 0) {
+        userCoins += Number(add);
+        updateWalletDisplay();
+        alert(`تم شحن ${Number(add).toLocaleString()} نقطة بنجاح إلى محفظتك!`);
+      }
+    });
+  }
+  updateWalletDisplay();
+});
 
 function openAccountPanel(){
   const overlay = document.getElementById("lexAccountOverlay");
