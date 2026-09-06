@@ -1129,6 +1129,41 @@ button.nav-item:active{
   </div>
 </div>
 
+
+<!-- ===== سوق الهدايا التفاعلية والتأثيرات المرئية ===== -->
+<div id="lexGiftsStoreContainer" style="background: linear-gradient(135deg, #1e1e2f, #2c2c3e); padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #e74c3c;">
+  <div style="font-weight: bold; margin-bottom: 10px; color: #e74c3c; text-align: center; font-size: 15px;">🎁 سوق الهدايا الملكية والتأثيرات الحية</div>
+  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+    
+    <button class="gift-item-btn" data-gift="وردة" data-cost="20" style="background: #2c2c3e; color: #fff; border: 1px solid #444; padding: 10px; border-radius: 8px; cursor: pointer; text-align: center; transition: 0.2s;">
+      <div style="font-size: 20px;">🌹</div>
+      <div style="font-size: 12px; font-weight: bold;">وردة</div>
+      <div style="font-size: 10px; color: #f1c40f;">20 نقطة</div>
+    </button>
+
+    <button class="gift-item-btn" data-gift="خاتم ألماس" data-cost="150" style="background: #2c2c3e; color: #fff; border: 1px solid #444; padding: 10px; border-radius: 8px; cursor: pointer; text-align: center; transition: 0.2s;">
+      <div style="font-size: 20px;">💍</div>
+      <div style="font-size: 12px; font-weight: bold;">خاتم ألماس</div>
+      <div style="font-size: 10px; color: #f1c40f;">150 نقطة</div>
+    </button>
+
+    <button class="gift-item-btn" data-gift="سيارة فارهة" data-cost="500" style="background: #2c2c3e; color: #fff; border: 1px solid #444; padding: 10px; border-radius: 8px; cursor: pointer; text-align: center; transition: 0.2s;">
+      <div style="font-size: 20px;">🏎️</div>
+      <div style="font-size: 12px; font-weight: bold;">سيارة فارهة</div>
+      <div style="font-size: 10px; color: #f1c40f;">500 نقطة</div>
+    </button>
+
+  </div>
+</div>
+
+<!-- عنصر التأثير البصري المتحرك على الشاشة -->
+<div id="giftAnimationOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; display: flex; justify-content: center; align-items: center; z-index: 9999; opacity: 0; transition: opacity 0.5s ease;">
+  <div id="giftAnimationContent" style="background: rgba(0, 0, 0, 0.85); padding: 25px 40px; border-radius: 16px; border: 2px solid #f1c40f; text-align: center; color: #fff; box-shadow: 0 0 30px rgba(241, 196, 15, 0.6);">
+    <div id="giftAnimIcon" style="font-size: 50px; margin-bottom: 10px;">🎁</div>
+    <div id="giftAnimText" style="font-size: 18px; font-weight: bold; color: #f1c40f;">تم إرسال هدية مميزة!</div>
+  </div>
+</div>
+
 <div class="room-card">
     <h3>🎥 غرفة البث المباشر</h3>
     <p class="small">
@@ -2355,6 +2390,45 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
           alert(`✅ أهلاً بك! تم إرسال طلبك إلى المستشار/ة ${advisorName} وسيتم الرد عليك في أقرب وقت.`);
         }
+      }
+    });
+  });
+});
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const giftButtons = document.querySelectorAll(".gift-item-btn");
+  const overlay = document.getElementById("giftAnimationOverlay");
+  const animIcon = document.getElementById("giftAnimIcon");
+  const animText = document.getElementById("giftAnimText");
+
+  giftButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const giftName = btn.dataset.gift;
+      const giftCost = Number(btn.dataset.cost);
+
+      if (typeof userCoins !== 'undefined' && userCoins < giftCost) {
+        alert(`⚠️ رصيد محفظتك غير كافٍ لشراء هدية "${giftName}" (التكلفة ${giftCost} نقطة).`);
+        return;
+      }
+
+      // خصم التكلفة وتحديث المحفظة
+      if (typeof userCoins !== 'undefined') {
+        userCoins -= giftCost;
+        if (typeof updateWalletDisplay === 'function') updateWalletDisplay();
+      }
+
+      // إظهار التأثير البصري المتحرك على الشاشة
+      if (overlay && animIcon && animText) {
+        animIcon.textContent = btn.querySelector("div").textContent;
+        animText.innerHTML = `🎉 تم إرسال <span style="color:#2ecc71;">${giftName}</span> بنجاح!<br><span style="font-size:14px; color:#aaa;">التكلفة: ${giftCost} نقطة</span>`;
+        
+        overlay.style.opacity = "1";
+        setTimeout(() => {
+          overlay.style.opacity = "0";
+        }, 2500);
       }
     });
   });
