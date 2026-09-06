@@ -1916,6 +1916,8 @@ document.querySelectorAll("[data-gift]").forEach(button => {
       return;
     }
     userCoins -= cost;
+    userXp += cost * 2; // زيادة نقاط الخبرة بناءً على قيمة الهدية
+    updateUserLevelDisplay();
     updateWalletDisplay();
     socket.emit("gift", giftName);
   });
@@ -2079,6 +2081,16 @@ connectSocket();
     </div>
 
     <div class="lex-account-body">
+      <!-- ===== نظام المستويات وشارات الـ VIP ===== -->
+      <div style="background: linear-gradient(135deg, #2c2c3e, #1e1e2f); padding: 12px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #f1c40f; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <div style="font-size: 11px; color: #f1c40f; font-weight: bold;">👑 رتبة VIP / مستوى الثروة</div>
+          <div id="lexUserLevel" style="font-size: 16px; font-weight: bold; color: #fff;">المستوى 5 <span style="background: #e74c3c; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-right: 5px;">VIP 1</span></div>
+        </div>
+        <div style="text-align: left; font-size: 11px; color: #aaa;">
+          نقاط الخبرة: <span id="lexXpPoints" style="color: #2ecc71; font-weight: bold;">2,450 XP</span>
+        </div>
+      </div>
       <!-- ===== محفظة النقود الرقمية ===== -->
       <div style="background: #252538; padding: 12px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #444; display: flex; justify-content: space-between; align-items: center;">
         <div>
@@ -2130,6 +2142,31 @@ connectSocket();
 
 // ===== نظام المحفظة الرقمية والرصيد =====
 let userCoins = Number(localStorage.getItem("LEXBRIDGE_COINS") || 1000);
+
+// ===== منطق حساب مستويات وثروة المستخدم =====
+let userXp = Number(localStorage.getItem("LEXBRIDGE_XP") || 2450);
+
+function updateUserLevelDisplay() {
+  const levelEl = document.getElementById("lexUserLevel");
+  const xpEl = document.getElementById("lexXpPoints");
+  
+  // حساب المستوى بناءً على نقاط الخبرة (كل 1000 نقطة مستوى جديد)
+  const currentLevel = Math.floor(userXp / 1000) + 1;
+  const vipRank = currentLevel >= 5 ? `VIP ${Math.min(currentLevel - 4, 5)}` : "عضو نشط";
+  const badgeColor = currentLevel >= 5 ? "#e74c3c" : "#3498db";
+
+  if(levelEl) {
+    levelEl.innerHTML = `المستوى ${currentLevel} <span style="background: ${badgeColor}; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-right: 5px;">${vipRank}</span>`;
+  }
+  if(xpEl) {
+    xpEl.textContent = userXp.toLocaleString() + " XP";
+  }
+  localStorage.setItem("LEXBRIDGE_XP", userXp);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  updateUserLevelDisplay();
+});
 
 function updateWalletDisplay() {
   const coinsEl = document.getElementById("lexWalletCoins");
