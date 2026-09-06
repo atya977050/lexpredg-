@@ -1104,6 +1104,31 @@ button.nav-item:active{
   <button id="rollDiceBtn" type="button" style="background: #e74c3c; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px;">🎲 رمي النرد (رهان 50 نقطة)</button>
 </div>
 
+
+<!-- ===== قسم المستشارين (مالك وميرفت) ===== -->
+<div id="lexConsultantsContainer" style="background: linear-gradient(135deg, #1e1e2f, #2c2c3e); padding: 16px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #3498db;">
+  <div style="font-weight: bold; margin-bottom: 12px; color: #3498db; text-align: center; font-size: 15px;">⚖️ خدمات الاستشارات المهنية المباشرة</div>
+  <div style="display: flex; gap: 10px; justify-content: space-around;">
+    
+    <!-- بطاقة المستشار مالك -->
+    <div style="background: #252538; padding: 12px; border-radius: 10px; text-align: center; flex: 1; border: 1px solid #444;">
+      <div style="font-size: 24px; margin-bottom: 5px;">👨‍⚖️</div>
+      <div style="font-weight: bold; color: #fff; font-size: 13px;">المستشار مالك</div>
+      <div style="font-size: 11px; color: #2ecc71; margin-bottom: 8px;">● متاح للاستشارة</div>
+      <button class="consult-btn" data-advisor="مالك" style="background: linear-gradient(135deg, #2980b9, #27ae60); color: #fff; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: bold; width: 100%; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">💬 استشارة مالك</button>
+    </div>
+
+    <!-- بطاقة المستشارة ميرفت -->
+    <div style="background: #252538; padding: 12px; border-radius: 10px; text-align: center; flex: 1; border: 1px solid #444;">
+      <div style="font-size: 24px; margin-bottom: 5px;">👩‍⚖️</div>
+      <div style="font-weight: bold; color: #fff; font-size: 13px;">المستشارة ميرفت</div>
+      <div style="font-size: 11px; color: #2ecc71; margin-bottom: 8px;">● متاحة للاستشارة</div>
+      <button class="consult-btn" data-advisor="ميرفت" style="background: linear-gradient(135deg, #8e44ad, #9b59b6); color: #fff; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: bold; width: 100%; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">💬 استشارة ميرفت</button>
+    </div>
+
+  </div>
+</div>
+
 <div class="room-card">
     <h3>🎥 غرفة البث المباشر</h3>
     <p class="small">
@@ -2301,5 +2326,40 @@ document.addEventListener("keydown", function(e){
     });
     </script>
     
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const consultButtons = document.querySelectorAll(".consult-btn");
+  
+  consultButtons.forEach(btn => {
+    btn.addEventListener("mouseover", () => {
+      btn.style.transform = "scale(1.03)";
+      btn.style.opacity = "0.9";
+    });
+    btn.addEventListener("mouseout", () => {
+      btn.style.transform = "scale(1)";
+      btn.style.opacity = "1";
+    });
+
+    btn.addEventListener("click", () => {
+      const advisorName = btn.dataset.advisor;
+      const confirmChat = confirm(`⚖️ هل تريد بدء جلسة استشارة فورية مع المستشار/ة "${advisorName}"؟ (التكلفة الافتراضية للجلسة: 100 نقطة أو مجاناً بحسب رتبتك).`);
+      
+      if(confirmChat) {
+        if(typeof userCoins !== 'undefined' && userCoins >= 100) {
+          userCoins -= 100;
+          if(typeof updateWalletDisplay === 'function') updateWalletDisplay();
+          alert(`✅ تم فتح خط الاتصال بنجاح مع المستشار/ة ${advisorName}. جاري تحويلك لغرفة الاستشارة الخاصة...`);
+        } else if(typeof userCoins !== 'undefined') {
+          alert("⚠️ رصيد محفظتك غير كافٍ لبدء جلسة استشارة (التكلفة 100 نقطة). يرجى شحن الرصيد.");
+        } else {
+          alert(`✅ أهلاً بك! تم إرسال طلبك إلى المستشار/ة ${advisorName} وسيتم الرد عليك في أقرب وقت.`);
+        }
+      }
+    });
+  });
+});
+</script>
+
 </body>
 </html>
