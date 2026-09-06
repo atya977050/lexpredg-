@@ -2265,5 +2265,41 @@ document.addEventListener("keydown", function(e){
 });
 </script>
 
+
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const rollDiceBtn = document.getElementById("rollDiceBtn");
+      const diceResultDisplay = document.getElementById("diceResultDisplay");
+
+      if(rollDiceBtn) {
+        rollDiceBtn.addEventListener("click", () => {
+          if(typeof userCoins !== 'undefined' && userCoins < 50) {
+            alert("⚠️ رصيد محفظتك غير كافٍ لرمي النرد (التكلفة 50 نقطة).");
+            return;
+          }
+          
+          if(typeof userCoins !== 'undefined') {
+            userCoins -= 50;
+            updateWalletDisplay();
+          }
+
+          const diceVal = Math.floor(Math.random() * 6) + 1;
+          if(diceResultDisplay) diceResultDisplay.textContent = `🎲 رقم النرد: ${diceVal}`;
+
+          if(diceVal >= 4) {
+            const reward = 120;
+            if(typeof userCoins !== 'undefined') {
+              userCoins += reward;
+              updateWalletDisplay();
+            }
+            alert(`🎉 مبروك! ظهر الرقم ${diceVal}. ربحت ${reward} نقطة!`);
+          } else {
+            alert(`❌ حظ أوفر! ظهر الرقم ${diceVal}. جرب مرة أخرى.`);
+          }
+        });
+      }
+    });
+    </script>
+    
 </body>
 </html>
