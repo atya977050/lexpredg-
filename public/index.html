@@ -1064,7 +1064,19 @@ button.nav-item:active{
     </div>
   </div>
 
-  <div class="room-card">
+  <!-- ===== نظام المايكات المتعددة (مقاعد الغرفة) ===== -->
+<div id="lexSeatsContainer" style="display: none; background: #1e1e2f; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #333;">
+  <div style="font-weight: bold; margin-bottom: 10px; color: #f39c12; text-align: center;">🎙️ مقاعد البث (المايكات المتاحة)</div>
+  <div id="seatsGrid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+    <!-- سيتم تعبئة المقاعد ديناميكياً -->
+    <div class="seat-item" data-seat="1" style="background: #2c2c3e; padding: 10px; text-align: center; border-radius: 8px; cursor: pointer; color: #fff;">1<br><span style="font-size: 11px; color: #aaa;">متاح</span></div>
+    <div class="seat-item" data-seat="2" style="background: #2c2c3e; padding: 10px; text-align: center; border-radius: 8px; cursor: pointer; color: #fff;">2<br><span style="font-size: 11px; color: #aaa;">متاح</span></div>
+    <div class="seat-item" data-seat="3" style="background: #2c2c3e; padding: 10px; text-align: center; border-radius: 8px; cursor: pointer; color: #fff;">3<br><span style="font-size: 11px; color: #aaa;">متاح</span></div>
+    <div class="seat-item" data-seat="4" style="background: #2c2c3e; padding: 10px; text-align: center; border-radius: 8px; cursor: pointer; color: #fff;">4<br><span style="font-size: 11px; color: #aaa;">متاح</span></div>
+  </div>
+</div>
+
+<div class="room-card">
     <h3>🎥 غرفة البث المباشر</h3>
     <p class="small">
       بث مباشر حقيقي باستخدام WebRTC وSocket.IO.
