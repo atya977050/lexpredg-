@@ -731,6 +731,270 @@ header button:hover{
   line-height:1.8;
   font-size:13px;
 }
+
+
+/* ===== LEX LIVE NAV BUTTONS FIX ===== */
+.nav-item{
+  position:relative !important;
+  z-index:20 !important;
+  pointer-events:auto !important;
+  cursor:pointer !important;
+  flex:1 1 0 !important;
+  min-width:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  box-sizing:border-box !important;
+}
+
+.nav-item button,
+button.nav-item{
+  pointer-events:auto !important;
+  cursor:pointer !important;
+}
+
+/* ===== LEX LIVE ACCOUNT PANEL ===== */
+#lexAccountOverlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  background:rgba(0,0,0,.72);
+  backdrop-filter:blur(7px);
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+}
+
+#lexAccountOverlay.active{
+  display:flex;
+}
+
+#lexAccountPanel{
+  width:min(440px,94vw);
+  max-height:88vh;
+  overflow:auto;
+  background:linear-gradient(180deg,#171717,#0d0d0d);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:24px;
+  box-shadow:0 24px 80px rgba(0,0,0,.55);
+  color:#fff;
+  direction:rtl;
+  animation:lexAccountIn .22s ease-out;
+}
+
+@keyframes lexAccountIn{
+  from{
+    opacity:0;
+    transform:translateY(18px) scale(.97);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+}
+
+.lex-account-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:20px 20px 14px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.lex-account-title{
+  font-size:20px;
+  font-weight:800;
+}
+
+.lex-account-close{
+  width:38px;
+  height:38px;
+  border:0;
+  border-radius:50%;
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:22px;
+  cursor:pointer;
+}
+
+.lex-account-profile{
+  text-align:center;
+  padding:24px 20px 18px;
+}
+
+.lex-account-avatar{
+  width:82px;
+  height:82px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:linear-gradient(135deg,#ff2a5f,#8b1dff);
+  font-size:38px;
+  box-shadow:0 12px 35px rgba(255,42,95,.25);
+}
+
+.lex-account-name{
+  margin-top:14px;
+  font-size:21px;
+  font-weight:800;
+}
+
+.lex-account-sub{
+  margin-top:5px;
+  color:#aaa;
+  font-size:13px;
+}
+
+.lex-account-body{
+  padding:4px 20px 20px;
+}
+
+.lex-account-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:15px 14px;
+  margin-top:10px;
+  border-radius:15px;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.06);
+}
+
+.lex-account-label{
+  color:#aaa;
+  font-size:13px;
+}
+
+.lex-account-value{
+  font-size:14px;
+  font-weight:700;
+  text-align:left;
+  word-break:break-word;
+}
+
+.lex-account-status{
+  color:#55e28a;
+}
+
+.lex-account-note{
+  margin-top:14px;
+  padding:13px;
+  border-radius:14px;
+  background:rgba(255,255,255,.045);
+  color:#aaa;
+  font-size:12px;
+  line-height:1.7;
+  text-align:center;
+}
+
+.lex-account-footer{
+  padding:0 20px 20px;
+}
+
+.lex-account-main-btn{
+  width:100%;
+  border:0;
+  border-radius:15px;
+  padding:14px;
+  background:#ff2a5f;
+  color:#fff;
+  font-size:15px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+
+/* ===== STEP-029F BOTTOM NAV INTERACTION FIX ===== */
+.navbar,
+.bottom-nav,
+nav{
+  position:relative;
+  z-index:9990 !important;
+}
+
+.nav-item{
+  position:relative !important;
+  z-index:9991 !important;
+  pointer-events:auto !important;
+  touch-action:manipulation !important;
+  cursor:pointer !important;
+  user-select:none !important;
+  -webkit-tap-highlight-color:transparent !important;
+  border:0 !important;
+  outline:none;
+}
+
+button.nav-item{
+  appearance:none !important;
+  -webkit-appearance:none !important;
+  pointer-events:auto !important;
+  touch-action:manipulation !important;
+}
+
+button.nav-item:active{
+  transform:scale(.96);
+}
+
+
+/* ===== STEP-029H FINAL NAV BAR FIX ===== */
+.nav-bar{
+  position:fixed !important;
+  left:0 !important;
+  right:0 !important;
+  bottom:0 !important;
+  z-index:99990 !important;
+  display:flex !important;
+  flex-direction:row !important;
+  flex-wrap:nowrap !important;
+  align-items:stretch !important;
+  justify-content:stretch !important;
+  width:100% !important;
+  box-sizing:border-box !important;
+  pointer-events:auto !important;
+}
+
+.nav-bar .nav-item{
+  flex:1 1 0 !important;
+  width:20% !important;
+  min-width:0 !important;
+  height:56px !important;
+  margin:0 !important;
+  padding:0 4px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  box-sizing:border-box !important;
+  position:relative !important;
+  z-index:99991 !important;
+  pointer-events:auto !important;
+  touch-action:manipulation !important;
+  cursor:pointer !important;
+  user-select:none !important;
+  -webkit-user-select:none !important;
+  -webkit-tap-highlight-color:transparent !important;
+  appearance:none !important;
+  -webkit-appearance:none !important;
+  border:0 !important;
+}
+
+.nav-bar .nav-item:active{
+  transform:none !important;
+}
+
+.nav-bar .nav-item:focus,
+.nav-bar .nav-item:focus-visible{
+  outline:none !important;
+}
+
+.nav-bar .nav-item[data-nav="account"]{
+  transform:none !important;
+  transition:none !important;
+}
+
 </style>
 </head>
 
@@ -905,11 +1169,11 @@ header button:hover{
 </div>
 
 <div class="nav-bar">
-  <div class="nav-item active" data-nav="home">🏠 الرئيسية</div>
-  <div class="nav-item" data-nav="discover">🔎 اكتشاف</div>
-  <div class="nav-item" data-nav="live">📹 بث مباشر</div>
-  <div class="nav-item" data-nav="messages">💬 الرسائل</div>
-  <div class="nav-item" data-nav="account">👤 حسابي</div>
+  <button type="button" class="nav-item active" data-nav="home">🏠 الرئيسية</button>
+  <button type="button" class="nav-item" data-nav="discover">🔎 اكتشاف</button>
+  <button type="button" class="nav-item" data-nav="live">📹 بث مباشر</button>
+  <button type="button" class="nav-item" data-nav="messages">💬 الرسائل</button>
+  <button type="button" class="nav-item" data-nav="account">👤 حسابي</button>
 </div>
 
 <script>
@@ -981,6 +1245,25 @@ function resetRoomUI(){
   if (roomSelectionLabel) roomSelectionLabel.textContent = ROOM_NAME;
 }
 
+function applyRoomSelection(){
+  document.querySelectorAll(".room-choice").forEach(button => {
+    const active = String(button.dataset.roomId || "") === String(ROOM_ID);
+
+    button.style.outline = active ? "2px solid #ff2a5f" : "";
+    button.style.transform = active ? "scale(1.02)" : "";
+    button.style.boxShadow = active
+      ? "0 0 0 2px rgba(255,42,95,.22), 0 8px 24px rgba(255,42,95,.18)"
+      : "";
+  });
+
+  $("roomBadge").textContent = "الغرفة: " + ROOM_NAME;
+
+  const roomSelectionLabel = $("roomSelectionLabel");
+  if(roomSelectionLabel){
+    roomSelectionLabel.textContent = ROOM_NAME;
+  }
+}
+
 function selectRoom(roomId, roomName){
   if(!roomId || !roomName) return;
 
@@ -993,16 +1276,10 @@ function selectRoom(roomId, roomName){
     resetRoomUI();
   }
 
-  ROOM_ID = roomId;
-  ROOM_NAME = roomName;
+  ROOM_ID = String(roomId);
+  ROOM_NAME = String(roomName);
 
-  $("roomBadge").textContent = "الغرفة: " + ROOM_NAME;
-
-  document.querySelectorAll(".room-choice").forEach(button => {
-    const active = button.dataset.roomId === ROOM_ID;
-    button.style.outline = active ? "2px solid #ff2a5f" : "";
-    button.style.transform = active ? "scale(1.02)" : "";
-  });
+  applyRoomSelection();
 
   addMessage("📍 تم اختيار غرفة: " + ROOM_NAME + ". اضغط دخول الغرفة الآن.", "system");
 }
@@ -1075,6 +1352,8 @@ async function loadDatabaseRooms() {
         grid.appendChild(button);
       });
 
+    applyRoomSelection();
+
     console.log(
       "DATABASE_ROOMS_LOADED:",
       databaseRooms.length
@@ -1121,6 +1400,8 @@ function renderRoomsDirectory(rooms){
       </button>
     `;
   }).join("");
+
+  applyRoomSelection();
 }
 
 $("roomsGrid").addEventListener("click", event => {
@@ -1595,19 +1876,65 @@ document.querySelectorAll(".nav-item").forEach(item => {
 
     if(nav === "home"){
       window.scrollTo({top:0,behavior:"smooth"});
+
     }else if(nav === "discover"){
       addMessage("🔎 قسم الاكتشاف: البثوث المتاحة تظهر هنا.", "system");
+
     }else if(nav === "live"){
-      window.scrollTo({top:0,behavior:"smooth"});
+      const liveRoom =
+        document.getElementById("joinBtn")?.closest(".room-card");
+
+      if(liveRoom){
+        liveRoom.scrollIntoView({
+          behavior:"smooth",
+          block:"center"
+        });
+
+        setTimeout(() => {
+          if(!joined){
+            const nameInput = document.getElementById("userName");
+            if(nameInput) nameInput.focus();
+
+            addMessage(
+              "📹 غرفة البث المباشر مفتوحة. اكتب اسمك ثم اضغط «دخول الغرفة الآن».",
+              "system"
+            );
+          }else if(currentRole === "host"){
+            const start = document.getElementById("startBtn");
+            if(start && !start.disabled){
+              start.focus();
+            }
+          }
+        },500);
+      }
+
     }else if(nav === "messages"){
-      alert("💬 صندوق الرسائل: خدمة الرسائل جاهزة للربط.");
-    }else if(nav === "account"){
-      alert(
-        "👤 حسابك في لكس | LIVE\n" +
-        "المستخدم: " + currentUser + "\n" +
-        "الدور: " +
-        (currentRole === "host" ? "مضيف" : "مشاهد")
+      const comments =
+        document.getElementById("roomComments") ||
+        document.getElementById("chatMessages");
+
+      if(comments){
+        comments.scrollIntoView({
+          behavior:"smooth",
+          block:"center"
+        });
+      }
+
+      setTimeout(() => {
+        const chatInput =
+          document.getElementById("chatInput") ||
+          document.querySelector('input[placeholder*="رسالة"]');
+
+        if(chatInput) chatInput.focus();
+      },500);
+
+      addMessage(
+        "💬 صندوق الرسائل والمحادثة مفتوح.",
+        "system"
       );
+
+    }else if(nav === "account"){
+      openAccountPanel();
     }
   });
 });
@@ -1676,6 +2003,140 @@ window.addEventListener("beforeunload", () => {
 connectSocket();
 
 })();
+</script>
+
+
+<!-- ===== LEX LIVE ACCOUNT WINDOW ===== -->
+<div id="lexAccountOverlay" aria-hidden="true">
+  <div id="lexAccountPanel" role="dialog" aria-modal="true" aria-labelledby="lexAccountTitle">
+
+    <div class="lex-account-head">
+      <div id="lexAccountTitle" class="lex-account-title">👤 حسابي في لكس | LIVE</div>
+      <button class="lex-account-close" type="button" onclick="closeAccountPanel()" aria-label="إغلاق">×</button>
+    </div>
+
+    <div class="lex-account-profile">
+      <div class="lex-account-avatar">👤</div>
+      <div id="lexAccountName" class="lex-account-name">غير محدد</div>
+      <div class="lex-account-sub">حساب المستخدم في منصة لكس | LIVE</div>
+    </div>
+
+    <div class="lex-account-body">
+
+      <div class="lex-account-row">
+        <div class="lex-account-label">👤 اسم المستخدم</div>
+        <div id="lexAccountUsername" class="lex-account-value">غير محدد</div>
+      </div>
+
+      <div class="lex-account-row">
+        <div class="lex-account-label">🆔 معرف المستخدم</div>
+        <div id="lexAccountUserId" class="lex-account-value">غير متاح</div>
+      </div>
+
+      <div class="lex-account-row">
+        <div class="lex-account-label">📌 حالة الحساب</div>
+        <div id="lexAccountStatus" class="lex-account-value lex-account-status">غير محددة</div>
+      </div>
+
+      <div class="lex-account-row">
+        <div class="lex-account-label">🎥 الدور في الغرفة</div>
+        <div id="lexAccountRole" class="lex-account-value">غير محدد</div>
+      </div>
+
+      <div class="lex-account-note">
+        ℹ️ المضيف أو المشاهد هو دور داخل الغرفة الحالية فقط،
+        ولا يغيّر هوية حساب المستخدم.
+      </div>
+
+    </div>
+
+    <div class="lex-account-footer">
+      <button class="lex-account-main-btn" type="button" onclick="closeAccountPanel()">
+        ✓ إغلاق الحساب
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+/* ===== LEX LIVE ACCOUNT WINDOW LOGIC ===== */
+
+function openAccountPanel(){
+  const overlay = document.getElementById("lexAccountOverlay");
+  if(!overlay) return;
+
+  const username = String(
+    localStorage.getItem("LEXBRIDGE_USERNAME") ||
+    localStorage.getItem("LEXBRIDGE_USER_NAME") ||
+    document.getElementById("userName")?.value ||
+    "غير محدد"
+  ).trim() || "غير محدد";
+
+  const userId = String(
+    localStorage.getItem("LEXBRIDGE_USER_ID") ||
+    "غير متاح"
+  ).trim() || "غير متاح";
+
+  const accountActive = Boolean(
+    localStorage.getItem("LEXBRIDGE_USER_ID")
+  );
+
+  const roleValue =
+    document.getElementById("roleSelect")?.value || "";
+
+  let status = accountActive
+    ? "🟢 الحساب مفعّل"
+    : "⚪ الحساب غير مفعّل";
+
+  let role = "غير محدد";
+  if(roleValue === "host"){
+    role = "🎙️ مضيف";
+  }else if(roleValue === "viewer"){
+    role = "👀 مشاهد";
+  }
+
+  const nameEl = document.getElementById("lexAccountName");
+  const usernameEl = document.getElementById("lexAccountUsername");
+  const userIdEl = document.getElementById("lexAccountUserId");
+  const statusEl = document.getElementById("lexAccountStatus");
+  const roleEl = document.getElementById("lexAccountRole");
+
+  if(nameEl) nameEl.textContent = username;
+  if(usernameEl) usernameEl.textContent = username;
+  if(userIdEl) userIdEl.textContent = userId;
+  if(statusEl) statusEl.textContent = status;
+  if(roleEl) roleEl.textContent = role;
+
+  overlay.classList.add("active");
+  overlay.setAttribute("aria-hidden","false");
+
+  document.body.style.overflow = "hidden";
+}
+function closeAccountPanel(){
+  const overlay = document.getElementById("lexAccountOverlay");
+  if(!overlay) return;
+
+  overlay.classList.remove("active");
+  overlay.setAttribute("aria-hidden","true");
+
+  document.body.style.overflow = "";
+}
+
+/* ===== ACCOUNT OVERLAY CLOSE ===== */
+document.addEventListener("click", function(e){
+  const overlay = document.getElementById("lexAccountOverlay");
+  if(overlay && e.target === overlay){
+    closeAccountPanel();
+  }
+});
+
+document.addEventListener("keydown", function(e){
+  if(e.key === "Escape"){
+    closeAccountPanel();
+  }
+});
 </script>
 
 </body>
