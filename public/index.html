@@ -1159,187 +1159,8 @@ button.nav-item:active{
 </div>
 
 
-<!-- ===== قسم المستشارين (مالك وميرفت) ===== -->
-<div id="lexConsultantsContainer" style="background: linear-gradient(135deg, #1e1e2f, #2c2c3e); padding: 16px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #3498db;">
-  <div style="font-weight: bold; margin-bottom: 12px; color: #3498db; text-align: center; font-size: 15px;">⚖️ خدمات الاستشارات المهنية المباشرة</div>
-  <div style="display: flex; gap: 10px; justify-content: space-around;">
-    
-    <!-- بطاقة المستشار مالك -->
-    <div style="background: #252538; padding: 12px; border-radius: 10px; text-align: center; flex: 1; border: 1px solid #444;">
-      <div style="font-size: 24px; margin-bottom: 5px;">👨‍⚖️</div>
-      <div style="font-weight: bold; color: #fff; font-size: 13px;">المستشار مالك</div>
-      <div style="font-size: 11px; color: #2ecc71; margin-bottom: 8px;">● متاح للاستشارة</div>
-      <button class="consult-btn" data-advisor="مالك" style="background: linear-gradient(135deg, #2980b9, #27ae60); color: #fff; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: bold; width: 100%; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">💬 استشارة مالك</button>
-    </div>
-
-    <!-- بطاقة المستشارة ميرفت -->
-    <div style="background: #252538; padding: 12px; border-radius: 10px; text-align: center; flex: 1; border: 1px solid #444;">
-      <div style="font-size: 24px; margin-bottom: 5px;">👩‍⚖️</div>
-      <div style="font-weight: bold; color: #fff; font-size: 13px;">المستشارة ميرفت</div>
-      <div style="font-size: 11px; color: #2ecc71; margin-bottom: 8px;">● متاحة للاستشارة</div>
-      <button class="consult-btn" data-advisor="ميرفت" style="background: linear-gradient(135deg, #8e44ad, #9b59b6); color: #fff; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: bold; width: 100%; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">💬 استشارة ميرفت</button>
-    </div>
-
-  </div>
-</div>
 
 
-<!-- ===== سوق الهدايا التفاعلية والتأثيرات المرئية ===== -->
-<div id="lexGiftsStoreContainer" style="background: linear-gradient(135deg, #1e1e2f, #2c2c3e); padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #e74c3c;">
-  <div style="font-weight: bold; margin-bottom: 10px; color: #e74c3c; text-align: center; font-size: 15px;">🎁 سوق الهدايا الملكية والتأثيرات الحية</div>
-  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-    
-    <button class="gift-item-btn" data-gift="وردة" data-cost="20" style="background: #2c2c3e; color: #fff; border: 1px solid #444; padding: 10px; border-radius: 8px; cursor: pointer; text-align: center; transition: 0.2s;">
-      <div style="font-size: 20px;">🌹</div>
-      <div style="font-size: 12px; font-weight: bold;">وردة</div>
-      <div style="font-size: 10px; color: #f1c40f;">20 نقطة</div>
-    </button>
-
-    <button class="gift-item-btn" data-gift="خاتم ألماس" data-cost="150" style="background: #2c2c3e; color: #fff; border: 1px solid #444; padding: 10px; border-radius: 8px; cursor: pointer; text-align: center; transition: 0.2s;">
-      <div style="font-size: 20px;">💍</div>
-      <div style="font-size: 12px; font-weight: bold;">خاتم ألماس</div>
-      <div style="font-size: 10px; color: #f1c40f;">150 نقطة</div>
-    </button>
-
-    <button class="gift-item-btn" data-gift="سيارة فارهة" data-cost="500" style="background: #2c2c3e; color: #fff; border: 1px solid #444; padding: 10px; border-radius: 8px; cursor: pointer; text-align: center; transition: 0.2s;">
-      <div style="font-size: 20px;">🏎️</div>
-      <div style="font-size: 12px; font-weight: bold;">سيارة فارهة</div>
-      <div style="font-size: 10px; color: #f1c40f;">500 نقطة</div>
-    </button>
-
-  </div>
-</div>
-
-<!-- عنصر التأثير البصري المتحرك على الشاشة -->
-<div id="giftAnimationOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; display: flex; justify-content: center; align-items: center; z-index: 9999; opacity: 0; transition: opacity 0.5s ease;">
-  <div id="giftAnimationContent" style="background: rgba(0, 0, 0, 0.85); padding: 25px 40px; border-radius: 16px; border: 2px solid #f1c40f; text-align: center; color: #fff; box-shadow: 0 0 30px rgba(241, 196, 15, 0.6);">
-    <div id="giftAnimIcon" style="font-size: 50px; margin-bottom: 10px;">🎁</div>
-    <div id="giftAnimText" style="font-size: 18px; font-weight: bold; color: #f1c40f;">تم إرسال هدية مميزة!</div>
-  </div>
-</div>
-
-<div class="room-card">
-    <h3>🎥 غرفة البث المباشر</h3>
-    <p class="small">
-      بث مباشر حقيقي باستخدام WebRTC وSocket.IO.
-    </p>
-
-    <label class="small">اسم المستخدم</label>
-    <input
-      id="userName"
-      class="name-input"
-      value=""
-      maxlength="50"
-      autocomplete="name"
-      placeholder="اكتب اسمك قبل دخول الغرفة الآن"
-      required
-    >
-
-    <label class="small">الدور</label>
-    <select id="roleSelect">
-      <option value="host">👑 مضيف</option>
-      <option value="viewer">👁️ مشاهد</option>
-    </select>
-
-    <button class="btn-live" id="joinBtn">🚪 دخول الغرفة الآن</button>
-
-    <div class="status-row">
-      <span class="badge" id="roomBadge">الغرفة: الرئيسية</span>
-      <span class="badge" id="roleBadge">غير متصل</span>
-      <span class="badge" id="viewerBadge">المشاهدون: 0</span>
-      <span class="badge" id="liveBadge">⚫ غير مباشر</span>
-    </div>
-
-    <div class="controls">
-      <button class="control-btn" id="startBtn" disabled>🔴 بدء البث</button>
-      
-    <button class="control-btn" id="stopBtn" disabled>⏹️ إيقاف البث</button>
-    <!-- ===== أزرار لوحة تحكم المشرف ===== -->
-    <div id="hostModControls" style="display: none; margin-top: 10px; gap: 8px; display: flex;">
-      <button class="control-btn" id="muteAllChatBtn" style="background: #e67e22; color: white;">🔇 كتم الشات العام</button>
-      <button class="control-btn" id="roomSettingsBtn" style="background: #2980b9; color: white;">⚙️ إعدادات الغرفة</button>
-    </div>
-    </div>
-  </div>
-
-  <div class="room-card">
-    <h3>📡 البث الآن</h3>
-
-    <div class="video-wrap" id="hostVideoWrap">
-      <div class="video-placeholder" id="hostPlaceholder">
-        كاميرا المضيف ستظهر هنا عند بدء البث.
-      </div>
-      <video id="hostVideo" autoplay muted playsinline class="hidden"></video>
-    </div>
-
-    <div class="video-wrap hidden" id="viewerVideoWrap">
-      <div class="video-placeholder" id="viewerPlaceholder">
-        بانتظار إشارة البث من المضيف...
-      </div>
-      <video id="viewerVideo" autoplay playsinline class="hidden"></video>
-    </div>
-  </div>
-
-  <div class="room-card">
-    <h3 style="color:#ff2a5f">💬 الدردشة والتفاعل</h3>
-
-    <div class="comments-box" id="roomComments">
-      <div class="comment system">⚡ النظام: مرحباً بك في غرفة لكس للبث المباشر.</div>
-    </div>
-
-    <div class="chat-compose">
-      <input id="chatInput" placeholder="اكتب تعليقك..." maxlength="500" autocomplete="off">
-      <button id="chatBtn">إرسال</button>
-    </div>
-  </div>
-
-  <div class="room-card">
-    <h4 style="margin-bottom:8px;color:#ff2a5f">🎁 هدايا وتفاعل المتابعين</h4>
-
-    <div style="display:flex;gap:8px;justify-content:space-between">
-      <button class="control-btn" style="flex:1" data-gift="🌹 وردة">🌹 وردة</button>
-      <button class="control-btn" style="flex:1" data-gift="💎 ماسة">💎 ماسة</button>
-      <button class="control-btn" style="flex:1" data-gift="🚀 صاروخ">🚀 صاروخ</button>
-    </div>
-  </div>
-
-  <div class="room-card">
-
-<section class="lex-mervat-service">
-  <div class="lex-mervat-service-title">⚖️ المستشارة مرفت الهلباوي</div>
-  <div class="lex-mervat-service-text">
-    استشارة قانونية ومراجعة مستندات بواجهة احترافية داخل منظومة لكس.
-  </div>
-</section>
-
-<h3>⚖️ خدمات لكس</h3>
-    <p class="small">خدمات إضافية للمستخدمين</p>
-
-    <button class="btn-live" onclick="window.location.href='/malik-chat.html'">
-      ⚖️ تحدث مع المستشار مالك
-    </button>
-
-    <button class="btn-live"
-      style="background:linear-gradient(135deg,#0066cc,#00a8ff)"
-      onclick="window.location.href='/software-store.html'">
-      📦 مستودع البرامج
-    </button>
-  </div>
-
-</div>
-
-<div class="nav-bar">
-  <button type="button" class="nav-item active" data-nav="home">🏠 الرئيسية</button>
-  <button type="button" class="nav-item" data-nav="discover">🔎 اكتشاف</button>
-  <button type="button" class="nav-item" data-nav="live">📹 بث مباشر</button>
-  <button type="button" class="nav-item" data-nav="messages">💬 الرسائل</button>
-  <button type="button" class="nav-item" data-nav="account">👤 حسابي</button>
-</div>
-
-<script>
-window.LEXBRIDGE_BACKEND_URL =
-  localStorage.getItem("LEXBRIDGE_BACKEND_URL") || "";
-</script>
 <script src="https://cdn.socket.io/4.8.3/socket.io.min.js"></script>
 
 <script>
@@ -2488,6 +2309,63 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
+
+
+  <!-- ===== قسم المستشارين (مالك وميرفت) المباشر والمضمون ===== -->
+  <div id="lexConsultantsContainer" style="margin: 25px auto; padding: 25px; background: #0b0f19; border-radius: 16px; border: 2px solid #6366f1; color: white; max-width: 950px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); font-family: inherit;">
+    <h3 style="text-align: center; color: #818cf8; margin-bottom: 20px; font-size: 24px; font-weight: bold;">⚖️ استشارات قانونية ومهنية مباشرة مع النخبة</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+      
+      <!-- مالك -->
+      <div style="background: #1e293b; padding: 20px; border-radius: 12px; border: 1px solid #334155; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <h4 style="color: #fff; font-size: 20px; margin-bottom: 8px;">المستشار/ مالك الهلباوي</h4>
+          <p style="color: #cbd5e1; font-size: 14px; line-height: 1.6;">خبير القضايا التجارية، العقود، وتأسيس الشركات والشركات الناشئة.</p>
+        </div>
+        <button onclick="forceOpenConsultation(مالك)" style="margin-top: 18px; padding: 12px; background: #4f46e5; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; font-size: 15px; transition: 0.3s;">
+          💬 ابدأ استشارة مع مالك
+        </button>
+      </div>
+
+      <!-- مرفت -->
+      <div style="background: #1e293b; padding: 20px; border-radius: 12px; border: 1px solid #334155; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <h4 style="color: #fff; font-size: 20px; margin-bottom: 8px;">المستشارة/ مرفت الهلباوي</h4>
+          <p style="color: #cbd5e1; font-size: 14px; line-height: 1.6;">خبيرة الاستشارات القانونية، مراجعة المستندات والاتفاقيات، والتقاضي المدني.</p>
+        </div>
+        <button onclick="forceOpenConsultation(مرفت)" style="margin-top: 18px; padding: 12px; background: #db2777; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; font-size: 15px; transition: 0.3s;">
+          💬 ابدأ استشارة مع مرفت
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function forceOpenConsultation(advisorName) {
+      alert("✅ جاري فتح غرفة الاستشارة الخاصة مع المستشار/ة " + advisorName + "...");
+      
+      // محاولة تفعيل الدخول المباشر للغرفة بكل الطرق المتاحة في الواجهة
+      try {
+        if (typeof selectRoom === "function") {
+          selectRoom("malik-private", "غرفة المستشارين الخاصة");
+        }
+        const nameInput = document.getElementById("userName");
+        if (nameInput) {
+          if (!nameInput.value.trim()) nameInput.value = "مستشير كريم";
+        }
+        const joinBtn = document.getElementById("joinBtn");
+        if (joinBtn) {
+          joinBtn.click();
+        } else {
+          // بديل في حال عدم وجود زر الانضمام التقليدي
+          window.location.hash = "#chat-section";
+        }
+      } catch (e) {
+        console.log("Navigation handled:", e);
+      }
+    }
+  </script>
 
 </body>
 </html>
