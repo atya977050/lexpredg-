@@ -1,3 +1,6 @@
+const LexLegalCentralBrain = require('./server_brain.js');
+const legalBrain = new LexLegalCentralBrain();
+
 const { openDatabase, saveDatabase, closeDatabase } = require('./database');
 const express = require("express");
 const http = require("http");
@@ -915,4 +918,34 @@ server.listen(PORT, HOST, () => {
     console.log("✅ Real rooms enabled");
     console.log("👑 Hosts + 👥 Viewers + 🔢 Live counters");
     console.log(`🌐 http://${HOST}:${PORT}`);
+});
+
+// 🧠 مسارات العقل المركزي القانوني للمستشار مالك والمستشارة مرفت
+app.post('/api/legal/consult', (req, res) => {
+    try {
+        const { message, consultantKey, userCoins } = req.body;
+        const parsed = legalBrain.parseRequest(message);
+        if (!parsed.valid) {
+            return res.status(400).json({ success: false, error: parsed.error });
+        }
+
+        const evaluation = legalBrain.evaluateConsultationRequest('user', consultantKey || 'malik', Number(userCoins) || 1000);
+        res.json({
+            success: true,
+            parsed,
+            evaluation
+        });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+app.post('/api/legal/review-document', (req, res) => {
+    try {
+        const { documentText } = req.body;
+        const result = legalBrain.processLegalDocument(documentText);
+        res.json({ success: true, result });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
 });
