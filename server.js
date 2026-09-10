@@ -16,7 +16,7 @@ app.get('*', (req, res) => {
 io.on('connection', (socket) => {
     socket.on('join-room', (room) => {
         socket.join(room);
-        io.to(room).emit('message', { user: 'النظام', text: `انضم مستخدم إلى ${room}` });
+        io.to(room).emit('message', { user: 'النظام', text: `انضم مستخدم إلى غرفة ${room}` });
     });
     socket.on('chat-message', (data) => {
         io.to(data.room).emit('message', { user: data.user, text: data.text });
@@ -24,4 +24,6 @@ io.on('connection', (socket) => {
 });
 
 const PORT = process.env.PORT || 3000;
-server.listen(PORT);
+server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
