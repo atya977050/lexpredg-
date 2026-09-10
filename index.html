@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ليكس بريدج - المنصة القانونية الملكية</title>
+    <title>ليكس بريدج - منصة البث والاستشارات</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Socket.io Client -->
@@ -16,6 +16,11 @@
         .gold-btn { background: linear-gradient(135deg, #d4af37, #aa771c); color: #000; font-weight: bold; transition: 0.3s; }
         .gold-btn:hover { background: linear-gradient(135deg, #f3e5ab, #d4af37); box-shadow: 0 0 10px #d4af37; }
         .royal-bottom-bar { background: rgba(11, 15, 25, 0.95); border-top: 1px solid rgba(212, 175, 55, 0.3); position: fixed; bottom: 0; left: 0; right: 0; z-index: 50; backdrop-filter: blur(10px); }
+        @keyframes floatUp {
+            0% { transform: translateY(0px) scale(0.5); opacity: 1; }
+            100% { transform: translateY(-200px) scale(1.2); opacity: 0; }
+        }
+        .floating-heart { animation: floatUp 2s ease-out forwards; position: absolute; }
     </style>
 </head>
 <body class="min-h-screen pb-24">
@@ -23,125 +28,150 @@
     <!-- شريط التنقل العلوي الملكي -->
     <header class="bg-gray-900/90 border-b border-yellow-500/30 sticky top-0 z-40 backdrop-blur-md px-4 py-3 shadow-md">
         <div class="max-w-4xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-2 cursor-pointer" onclick="showMainScreen()">
-                <span class="text-2xl">⚖️</span>
-                <h1 class="text-sm md:text-base font-black text-yellow-400">LexBridge الملكية</h1>
+            <div class="flex items-center gap-2 cursor-pointer" onclick="goBackScreen()">
+                <span class="text-xl">⬅️</span>
+                <h1 class="text-sm md:text-base font-black text-yellow-400">LexBridge Live</h1>
             </div>
-
-            <div class="hidden md:flex items-center bg-black/50 border border-yellow-500/30 rounded-lg px-3 py-1.5 w-64">
-                <input type="text" id="global-search" placeholder="ابحث في المنصة..." class="bg-transparent text-xs text-white w-full outline-none text-right">
-                <button type="button" onclick="alert('جاري البحث...')" class="text-yellow-400 text-xs">🔍</button>
-            </div>
-
-            <div class="flex items-center gap-2">
-                <span id="user-wallet-badge" class="text-xs bg-yellow-500/20 border border-yellow-500/40 text-yellow-400 px-3 py-1.5 rounded-lg font-bold">محفظتي: 0 ج.م</span>
+            <div class="flex items-center gap-3">
+                <span id="user-wallet-badge" class="text-xs bg-yellow-500/20 border border-yellow-500/40 text-yellow-400 px-3 py-1 rounded-lg font-bold">المحفظة: 500 ج.م</span>
             </div>
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto p-3 md:p-6 mt-4">
+    <main class="max-w-4xl mx-auto p-3 md:p-6 mt-2">
 
-        <!-- 1. شاشة تسجيل الدخول وإنشاء حساب (تفتح أولاً دائماً) -->
+        <!-- 1. شاشة تسجيل الدخول وإنشاء حساب المستقلة تماماً -->
         <div id="auth-screen" class="royal-double-border rounded-2xl bg-gray-900/98 p-6 max-w-md mx-auto backdrop-blur-md mb-6">
             <div class="text-center mb-6">
-                <span class="text-2xl">⚖️</span>
-                <h2 class="text-xl font-black text-yellow-400 mt-2">بوابة الدخول لمنصة LexBridge</h2>
-                <p class="text-xs text-gray-300 mt-1">سجل دخولك أو أنشئ حساباً جديداً للوصول إلى الغرف العامة.</p>
+                <span class="text-3xl">⚖️</span>
+                <h2 class="text-xl font-black text-yellow-400 mt-2">تسجيل الدخول / إنشاء حساب</h2>
+                <p class="text-xs text-gray-300 mt-1">المنصة القانونية التفاعلية الأولى</p>
             </div>
 
             <div class="flex justify-center gap-2 mb-4">
-                <button type="button" onclick="switchAuthTab('login')" id="tab-login-btn" class="gold-btn px-4 py-1.5 rounded-lg text-xs font-bold flex-1">تسجيل الدخول</button>
-                <button type="button" onclick="switchAuthTab('register')" id="tab-reg-btn" class="bg-gray-800 text-yellow-400 border border-yellow-500/40 px-4 py-1.5 rounded-lg text-xs font-bold flex-1">إنشاء حساب</button>
+                <button type="button" onclick="switchAuthTab('login')" id="tab-login-btn" class="gold-btn px-4 py-1.5 rounded-lg text-xs font-bold flex-1">دخول</button>
+                <button type="button" onclick="switchAuthTab('register')" id="tab-reg-btn" class="bg-gray-800 text-yellow-400 border border-yellow-500/40 px-4 py-1.5 rounded-lg text-xs font-bold flex-1">حساب جديد</button>
             </div>
 
             <div class="space-y-3">
                 <div id="auth-name-container" class="hidden">
                     <label class="text-[11px] text-gray-300 block mb-1">الاسم الكامل:</label>
-                    <input type="text" id="input-reg-name" placeholder="ادخل اسمك..." class="w-full bg-black/70 border border-yellow-500/40 rounded-lg p-2.5 text-xs text-white outline-none focus:border-yellow-400">
+                    <input type="text" id="input-reg-name" placeholder="اسمك الكريم..." class="w-full bg-black/70 border border-yellow-500/40 rounded-lg p-2.5 text-xs text-white outline-none">
                 </div>
                 <div>
-                    <label class="text-[11px] text-gray-300 block mb-1">البريد الإلكتروني أو الهاتف:</label>
-                    <input type="text" id="input-auth-email" placeholder="example@domain.com" class="w-full bg-black/70 border border-yellow-500/40 rounded-lg p-2.5 text-xs text-white outline-none focus:border-yellow-400">
+                    <label class="text-[11px] text-gray-300 block mb-1">البريد أو الهاتف:</label>
+                    <input type="text" id="input-auth-email" placeholder="example@mail.com" class="w-full bg-black/70 border border-yellow-500/40 rounded-lg p-2.5 text-xs text-white outline-none">
                 </div>
                 <div>
                     <label class="text-[11px] text-gray-300 block mb-1">كلمة المرور:</label>
-                    <input type="password" id="input-auth-pass" placeholder="••••••••" class="w-full bg-black/70 border border-yellow-500/40 rounded-lg p-2.5 text-xs text-white outline-none focus:border-yellow-400">
+                    <input type="password" id="input-auth-pass" placeholder="••••••••" class="w-full bg-black/70 border border-yellow-500/40 rounded-lg p-2.5 text-xs text-white outline-none">
                 </div>
                 <button type="button" onclick="processAuthSubmission()" class="gold-btn w-full py-2.5 rounded-lg text-xs font-bold mt-2" id="auth-action-btn">دخول المنصة</button>
             </div>
         </div>
 
-        <!-- 2. الشاشة الرئيسية (تظهر بعد تسجيل الدخول) -->
+        <!-- 2. الشاشة الرئيسية (الغرف العامة على طراز Didi Live) -->
         <div id="main-screen" class="royal-double-border rounded-2xl bg-gray-900/98 p-4 md:p-6 backdrop-blur-md mb-6 hidden">
-            <div class="text-center mb-6">
-                <span class="text-xs bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full font-bold">المنصة القانونية الأولى للتقاضي الحي</span>
-                <h2 class="text-xl md:text-3xl font-black text-yellow-400 mt-2">غرف البث والاستشارات العامة</h2>
-                <p class="text-xs md:text-sm text-gray-300 mt-1">اختر الغرفة العامة المناسبة وانضم للبث الحي.</p>
+            <div class="flex justify-between items-center mb-4 border-b border-yellow-500/30 pb-3">
+                <div>
+                    <h2 class="text-lg md:text-2xl font-black text-yellow-400">الغرف العامة المتاحة</h2>
+                    <p class="text-xs text-gray-300">اختر غرفة وانضم للبث الحي التفاعلي</p>
+                </div>
+                <button type="button" onclick="openCreateRoomModal()" class="gold-btn px-3 py-1.5 rounded-lg text-xs font-bold">➕ إنشاء غرفة</button>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-4">
-                <div class="bg-black/60 border border-yellow-500/30 p-4 rounded-xl hover:border-yellow-400 transition flex flex-col justify-between">
+            <div id="rooms-grid" class="grid md:grid-cols-2 gap-4">
+                <!-- الغرفة الأولى -->
+                <div class="bg-black/60 border border-yellow-500/30 p-4 rounded-xl hover:border-yellow-400 transition flex flex-col justify-between cursor-pointer" onclick="handleRoomSelection('غرفة القضايا المدنية العامة', 'المستشار أحمد الهواري', 142, true)">
                     <div>
-                        <span class="text-[10px] bg-red-600/20 text-red-400 border border-red-500/30 px-2 py-0.5 rounded font-bold">🔴 متاح الآن</span>
-                        <h3 class="font-bold text-yellow-400 text-sm md:text-base mt-2">الغرفة العامة الأولى (القضايا المدنية)</h3>
-                        <p class="text-gray-300 text-xs mt-1 leading-relaxed">نقاشات مفتوحة واستشارات في قضايا المدني والنزاعات العامة.</p>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-[10px] bg-red-600 text-white px-2 py-0.5 rounded-full font-bold animate-pulse">🔴 مباشر</span>
+                            <span class="text-xs text-yellow-400 font-bold">👥 142 مشاهد</span>
+                        </div>
+                        <h3 class="font-bold text-yellow-300 text-sm md:text-base">غرفة القضايا المدنية العامة</h3>
+                        <p class="text-xs text-gray-400 mt-1">المضيف الحالي: <strong class="text-white">المستشار أحمد الهواري</strong></p>
                     </div>
-                    <button type="button" onclick="openRoleModal('الغرفة العامة الأولى (القضايا المدنية)')" class="mt-4 gold-btn w-full py-2 rounded-lg text-xs font-bold">دخول الغرفة</button>
+                    <div class="mt-4 flex justify-between items-center bg-gray-800/60 p-2 rounded-lg border border-yellow-500/20 text-xs">
+                        <span class="text-gray-300">حالة الغرفة: بها مضيف ومشاهدون</span>
+                        <span class="text-yellow-400 font-bold">دخول كمشاهد ➔</span>
+                    </div>
                 </div>
 
-                <div class="bg-black/60 border border-yellow-500/30 p-4 rounded-xl hover:border-yellow-400 transition flex flex-col justify-between">
+                <!-- الغرفة الثانية (فارغة لتجربة اختيار مضيف) -->
+                <div class="bg-black/60 border border-yellow-500/30 p-4 rounded-xl hover:border-yellow-400 transition flex flex-col justify-between cursor-pointer" onclick="handleRoomSelection('غرفة منازعات الشركات والتجارة', '', 0, false)">
                     <div>
-                        <span class="text-[10px] bg-red-600/20 text-red-400 border border-red-500/30 px-2 py-0.5 rounded font-bold">🔴 متاح الآن</span>
-                        <h3 class="font-bold text-yellow-400 text-sm md:text-base mt-2">الغرفة العامة الثانية (القضايا التجارية)</h3>
-                        <p class="text-gray-300 text-xs mt-1 leading-relaxed">استشارات الشركات، المنازعات التجارية، والنزاعات العمالية.</p>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-[10px] bg-yellow-600/30 text-yellow-300 px-2 py-0.5 rounded-full font-bold">🟡 متاحة للإنشاء</span>
+                            <span class="text-xs text-yellow-400 font-bold">👥 0 مشاهد</span>
+                        </div>
+                        <h3 class="font-bold text-yellow-300 text-sm md:text-base">غرفة منازعات الشركات والتجارة</h3>
+                        <p class="text-xs text-gray-400 mt-1">المضيف: <strong class="text-yellow-400">لا يوجد مضيف حالياً</strong></p>
                     </div>
-                    <button type="button" onclick="openRoleModal('الغرفة العامة الثانية (القضايا التجارية)')" class="mt-4 gold-btn w-full py-2 rounded-lg text-xs font-bold">دخول الغرفة</button>
+                    <div class="mt-4 flex justify-between items-center bg-gray-800/60 p-2 rounded-lg border border-yellow-500/20 text-xs">
+                        <span class="text-gray-300">الغرفة فارغة</span>
+                        <span class="text-yellow-400 font-bold">اختر صفة الدخول ➔</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- 3. غرفة الشات والبث الحي العام -->
-        <div id="room-screen" class="royal-double-border rounded-2xl bg-gray-900/98 p-3 md:p-5 backdrop-blur-md hidden mb-6">
+        <!-- 3. غرفة الشات والبث الحي التفاعلي (على طراز دي دي لايف) -->
+        <div id="room-screen" class="royal-double-border rounded-2xl bg-gray-900/98 p-3 md:p-5 backdrop-blur-md hidden mb-6 relative overflow-hidden">
             <div class="flex justify-between items-center border-b border-yellow-600/40 pb-3 mb-3">
                 <div>
-                    <span class="text-[10px] bg-red-600 text-white px-2 py-0.5 rounded-full font-bold animate-pulse">🔴 مباشر الآن</span>
+                    <span id="room-live-tag" class="text-[10px] bg-red-600 text-white px-2 py-0.5 rounded-full font-bold animate-pulse">🔴 بث حي</span>
                     <h2 id="active-room-name" class="text-sm md:text-lg font-black text-yellow-400 mt-1">اسم الغرفة</h2>
                 </div>
-                <button type="button" onclick="leaveRoom()" class="bg-red-600/20 border border-red-500 text-red-400 hover:bg-red-600 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition">✖ مغادرة الغرفة</button>
+                <div class="flex items-center gap-2">
+                    <span id="room-viewer-count" class="text-xs bg-black/50 border border-yellow-500/30 px-2.5 py-1 rounded-lg text-yellow-400 font-bold">👥 0</span>
+                    <button type="button" onclick="leaveRoom()" class="bg-red-600/20 border border-red-500 text-red-400 px-3 py-1.5 rounded-lg text-xs font-bold">✖ مغادرة</button>
+                </div>
             </div>
 
-            <!-- شاشة الكاميرا -->
-            <div class="relative bg-black rounded-xl overflow-hidden border border-yellow-500/30 h-48 md:h-72 flex items-center justify-center mb-3">
+            <!-- شاشة الكاميرا / البث -->
+            <div id="video-container" class="relative bg-black rounded-xl overflow-hidden border border-yellow-500/30 h-48 md:h-72 flex items-center justify-center mb-3">
                 <video id="live-video" autoplay playsinline muted class="absolute inset-0 w-full h-full object-cover hidden"></video>
                 <div id="video-placeholder" class="absolute inset-0 bg-cover bg-center opacity-40" style="background-image: url('https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=800&q=80');"></div>
                 <div id="video-info" class="relative z-10 text-center p-4">
                     <span class="text-3xl">📡</span>
-                    <p class="text-xs md:text-sm font-bold text-yellow-300 mt-2">البث الحي نشط...</p>
-                    <p id="user-status-display" class="text-[11px] text-gray-300 mt-1">المستخدم | الصفة</p>
+                    <p id="room-host-display" class="text-xs md:text-sm font-bold text-yellow-300 mt-2">المضيف: جاري البث...</p>
+                    <p id="user-status-display" class="text-[11px] text-gray-300 mt-1">صفة المستخدم: مشاهد</p>
                 </div>
+                <!-- طبقة القلوب المتحركة -->
+                <div id="floating-hearts-layer" class="absolute inset-0 pointer-events-none overflow-hidden z-20"></div>
             </div>
 
-            <!-- الشات -->
-            <div id="chat-messages" class="bg-black/60 border border-yellow-500/20 rounded-xl p-3 h-36 md:h-48 overflow-y-auto mb-3 text-xs space-y-2">
+            <!-- هدايا دي دي لايف السريعة -->
+            <div class="flex items-center gap-1.5 overflow-x-auto bg-black/50 p-2 rounded-xl border border-yellow-500/30 mb-3 text-xs">
+                <span class="text-yellow-400 font-bold whitespace-nowrap">🎁 هدايا المنصة:</span>
+                <button type="button" onclick="sendGift('🌹 وردة (10 ج.م)', 10)" class="bg-gray-800 hover:bg-gray-700 text-yellow-300 border border-yellow-500/20 px-2 py-1 rounded whitespace-nowrap">🌹 وردة (10)</button>
+                <button type="button" onclick="sendGift('💍 خاتم ألماس (50 ج.م)', 50)" class="bg-gray-800 hover:bg-gray-700 text-yellow-300 border border-yellow-500/20 px-2 py-1 rounded whitespace-nowrap">💍 خاتم (50)</button>
+                <button type="button" onclick="sendGift('🚗 سيارة ملكية (100 ج.م)', 100)" class="bg-gray-800 hover:bg-gray-700 text-yellow-300 border border-yellow-500/20 px-2 py-1 rounded whitespace-nowrap">🚗 سيارة (100)</button>
+                <button type="button" onclick="sendGift('🦁 أسد ذهبي (500 ج.م)', 500)" class="bg-gray-800 hover:bg-gray-700 text-yellow-300 border border-yellow-500/20 px-2 py-1 rounded whitespace-nowrap">🦁 أسد (500)</button>
+            </div>
+
+            <!-- شات الغرفة -->
+            <div id="chat-messages" class="bg-black/60 border border-yellow-500/20 rounded-xl p-3 h-32 md:h-44 overflow-y-auto mb-3 text-xs space-y-2">
                 <div class="bg-yellow-500/10 border border-yellow-500/20 p-2 rounded text-yellow-300">
-                    <span class="font-bold">النظام:</span> أهلاً بك في البث المباشر.
+                    <span class="font-bold">نظام Didi Live:</span> مرحباً بك في غرفة البث التفاعلي. أرسل رسالة أو تفاعل بالقلوب والهدايا!
                 </div>
             </div>
 
             <div class="flex flex-col gap-2">
                 <div class="flex gap-2">
-                    <input type="text" id="chat-input" placeholder="اكتب رسالتك..." class="flex-1 bg-black/70 border border-yellow-500/40 rounded-lg p-2.5 text-xs text-white text-right outline-none focus:border-yellow-400">
+                    <input type="text" id="chat-input" placeholder="اكتب تعليقك في البث..." class="flex-1 bg-black/70 border border-yellow-500/40 rounded-lg p-2.5 text-xs text-white text-right outline-none">
                     <button type="button" id="send-chat-btn" class="gold-btn px-4 py-2 rounded-lg text-xs font-bold">إرسال</button>
+                    <button type="button" onclick="sendHeartAnimation()" class="bg-red-600/30 border border-red-500 text-red-400 hover:bg-red-600 hover:text-white px-3 py-2 rounded-lg text-xs font-bold transition">❤️</button>
                 </div>
 
                 <div class="flex flex-wrap gap-2 justify-between items-center bg-black/40 p-2 rounded-lg border border-yellow-500/20 text-xs">
                     <div class="flex gap-1.5">
-                        <button type="button" onclick="document.getElementById('file-picker').click()" class="bg-gray-800 hover:bg-gray-700 text-yellow-400 border border-yellow-500/30 px-2.5 py-1 rounded transition">📁 إرفاق مستند</button>
+                        <button type="button" onclick="document.getElementById('file-picker').click()" class="bg-gray-800 hover:bg-gray-700 text-yellow-400 border border-yellow-500/30 px-2.5 py-1 rounded">📁 مستند</button>
                         <input type="file" id="file-picker" class="hidden" onchange="handleFileUpload(event)">
                     </div>
                     <div class="flex gap-1.5">
-                        <button type="button" onclick="toggleCamera()" id="cam-btn" class="bg-gray-800 hover:bg-gray-700 text-yellow-400 border border-yellow-500/30 px-2.5 py-1 rounded transition">📷 الكاميرا</button>
-                        <button type="button" onclick="toggleMic()" id="mic-btn" class="bg-gray-800 hover:bg-gray-700 text-yellow-400 border border-yellow-500/30 px-2.5 py-1 rounded transition">🎤 المايك</button>
+                        <button type="button" onclick="toggleCamera()" id="cam-btn" class="bg-gray-800 hover:bg-gray-700 text-yellow-400 border border-yellow-500/30 px-2.5 py-1 rounded">📷 كاميرا</button>
+                        <button type="button" onclick="toggleMic()" id="mic-btn" class="bg-gray-800 hover:bg-gray-700 text-yellow-400 border border-yellow-500/30 px-2.5 py-1 rounded">🎤 مايك</button>
                     </div>
                 </div>
             </div>
@@ -149,29 +179,30 @@
 
     </main>
 
-    <!-- Modal تحديد صفة الدخول (مضيف أو مشاهد) -->
+    <!-- Modal تخيير صفة الدخول (إذا كانت الغرفة فارغة) -->
     <div id="role-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
         <div class="royal-double-border bg-gray-900 rounded-2xl p-5 max-w-sm w-full">
-            <h3 id="role-modal-room-title" class="text-sm font-black text-yellow-400 mb-3">اختر صفة الدخول للغرفة</h3>
+            <h3 id="role-modal-room-title" class="text-sm font-black text-yellow-400 mb-2">اختر صفة الدخول للغرفة</h3>
+            <p class="text-xs text-gray-300 mb-4">هذه الغرفة ليس لها مضيف حالياً، يمكنك فتح البث كمضيف أو الدخول كمشاهد.</p>
             <div class="space-y-3">
                 <div class="grid grid-cols-2 gap-2">
-                    <button type="button" onclick="selectRoleOption('مشاهد')" id="btn-opt-viewer" class="bg-yellow-500 text-black border border-yellow-400 py-2 rounded-lg text-xs font-bold transition">مشاهد</button>
-                    <button type="button" onclick="selectRoleOption('مضيف')" id="btn-opt-host" class="bg-gray-800 border border-yellow-500/40 text-yellow-400 py-2 rounded-lg text-xs font-bold transition">مضيف</button>
+                    <button type="button" onclick="selectRoleOption('مشاهد')" id="btn-opt-viewer" class="bg-yellow-500 text-black border border-yellow-400 py-2.5 rounded-lg text-xs font-bold transition">مشاهد</button>
+                    <button type="button" onclick="selectRoleOption('مضيف')" id="btn-opt-host" class="bg-gray-800 border border-yellow-500/40 text-yellow-400 py-2.5 rounded-lg text-xs font-bold transition">مضيف للبث</button>
                 </div>
                 <div class="flex gap-2 pt-2">
-                    <button type="button" onclick="confirmRoomEntry()" class="gold-btn flex-1 py-2 rounded-lg text-xs font-bold">تأكيد ودخول</button>
+                    <button type="button" onclick="confirmRoomEntry()" class="gold-btn flex-1 py-2 rounded-lg text-xs font-bold">دخول الغرفة</button>
                     <button type="button" onclick="closeRoleModal()" class="bg-gray-800 text-gray-300 px-3 py-2 rounded-lg text-xs font-bold">إلغاء</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal الدفع المستقل للمستشارين (مالك أو مرفت) -->
+    <!-- Modal الدفع المستقل للمستشارين (مالك ومرفت) -->
     <div id="consultant-payment-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
         <div class="royal-double-border bg-gray-900 rounded-2xl p-5 max-w-md w-full">
             <h3 id="pay-modal-title" class="text-sm font-black text-yellow-400 mb-2">استشارة خاصة - دفع أتعاب الخبير</h3>
             <p class="text-xs text-gray-300 mb-3 leading-relaxed">
-                للحصول على استشارة خاصة مع المستشار، يرجى تحويل مبلغ <strong class="text-yellow-400">100 جنيه</strong> على محفظة فودافون كاش / إنستاباي التالية:
+                للحصول على استشارة خاصة، يرجى تحويل مبلغ <strong class="text-yellow-400">100 جنيه</strong> على محفظة فودافون كاش / إنستاباي:
             </p>
             <div class="bg-black/60 border border-yellow-500/40 p-3 rounded-xl text-center mb-4">
                 <span class="text-xs text-gray-400 block">رقم المحفظة المعتمد:</span>
@@ -184,7 +215,7 @@
                     <input type="text" id="pay-user-name" placeholder="اسمك الثلاثي..." class="w-full bg-black/70 border border-yellow-500/40 rounded-lg p-2 text-xs text-white outline-none">
                 </div>
                 <div>
-                    <label class="text-[11px] text-gray-300 block mb-1">صورة إيصال التحويل (أو كود التحويل):</label>
+                    <label class="text-[11px] text-gray-300 block mb-1">صورة إيصال التحويل (أو الكود):</label>
                     <input type="file" id="pay-receipt-file" class="w-full bg-black/70 border border-yellow-500/40 rounded-lg p-1.5 text-xs text-white outline-none">
                 </div>
                 <div class="flex gap-2 pt-2">
@@ -195,20 +226,36 @@
         </div>
     </div>
 
-    <!-- الشريط السفلي (الرئيسية، المستشار مالك، المستشارة مرفت) -->
-    <div class="royal-bottom-bar py-2 px-2">
-        <div class="max-w-4xl mx-auto flex justify-around items-center text-xs">
+    <!-- الشريط السفلي الملكي (بالترتيب المطلوب تماماً) -->
+    <div class="royal-bottom-bar py-2 px-1">
+        <div class="max-w-4xl mx-auto flex justify-around items-center text-[10px] md:text-xs">
             <button type="button" onclick="showMainScreen()" class="flex flex-col items-center text-yellow-400 hover:text-white transition">
-                <span class="text-lg">🏠</span>
-                <span class="font-bold text-[10px]">الرئيسية</span>
+                <span class="text-base md:text-lg">🏠</span>
+                <span class="font-bold">الرئيسية</span>
             </button>
-            <button type="button" onclick="openConsultantPaymentModal('المستشار/ مالك الهلباوي')" class="flex flex-col items-center text-yellow-400 hover:text-white transition">
-                <span class="text-lg">⚖️</span>
-                <span class="font-bold text-[10px]">المستشار مالك</span>
+            <button type="button" onclick="alert('قسم استكشاف المنصة وغرف النخبة')" class="flex flex-col items-center text-yellow-400 hover:text-white transition">
+                <span class="text-base md:text-lg">🧭</span>
+                <span class="font-bold">استكشاف</span>
             </button>
-            <button type="button" onclick="openConsultantPaymentModal('المستشارة/ مرفت الهلباوي')" class="flex flex-col items-center text-yellow-400 hover:text-white transition">
-                <span class="text-lg">⚖️</span>
-                <span class="font-bold text-[10px]">المستشارة مرفت</span>
+            <button type="button" onclick="showMainScreen()" class="flex flex-col items-center text-yellow-400 hover:text-white transition">
+                <span class="text-base md:text-lg">📡</span>
+                <span class="font-bold">البث المباشر</span>
+            </button>
+            <button type="button" onclick="alert('حسابك الشخصي ومحفظتك بالمنصة')" class="flex flex-col items-center text-yellow-400 hover:text-white transition">
+                <span class="text-base md:text-lg">👤</span>
+                <span class="font-bold">حسابي</span>
+            </button>
+            <button type="button" onclick="goBackScreen()" class="flex flex-col items-center text-yellow-400 hover:text-white transition">
+                <span class="text-base md:text-lg">↩️</span>
+                <span class="font-bold">رجوع</span>
+            </button>
+            <button type="button" onclick="openConsultantPaymentModal('المستشار مالك الهلباوي')" class="flex flex-col items-center text-yellow-400 hover:text-white transition">
+                <span class="text-base md:text-lg">⚖️</span>
+                <span class="font-bold">مالك</span>
+            </button>
+            <button type="button" onclick="openConsultantPaymentModal('المستشارة مرفت الهلباوي')" class="flex flex-col items-center text-yellow-400 hover:text-white transition">
+                <span class="text-base md:text-lg">⚖️</span>
+                <span class="font-bold">مرفت</span>
             </button>
         </div>
     </div>
@@ -220,11 +267,12 @@
         let currentUserRole = 'مشاهد';
         let selectedRoomToJoin = '';
         let targetConsultant = '';
+        let userWallet = 500;
         let localStream = null;
         let isCamActive = false;
         let isMicActive = true;
 
-        // تبديل تبويبات شاشة التسجيل
+        // تبديل تبويبات شاشة تسجيل الدخول
         function switchAuthTab(mode) {
             authTabMode = mode;
             const regContainer = document.getElementById('auth-name-container');
@@ -245,58 +293,86 @@
             }
         }
 
-        // إتمام التسجيل وإخفاء شاشة الدخول تماماً وإظهار الشاشة الرئيسية
+        // إتمام التسجيل وإظهار الشاشة الرئيسية حصراً
         function processAuthSubmission() {
             const email = document.getElementById('input-auth-email').value.trim();
-            if(email === '') { alert('يرجى إدخال البريد الإلكتروني أو الهاتف'); return; }
+            if(email === '') { alert('يرجى إدخال البريد أو الهاتف'); return; }
 
             if(authTabMode === 'register') {
                 const nameInput = document.getElementById('input-reg-name').value.trim();
                 if(nameInput !== '') currentUserName = nameInput;
-                alert('🎉 تم إنشاء حسابك الملكي بنجاح!');
+                alert('🎉 تم إنشاء حسابك بنجاح!');
             } else {
-                alert('🔓 أهلاً بك مجدداً في منصة LexBridge!');
+                alert('🔓 أهلاً بك مجدداً!');
             }
 
-            // إخفاء شاشة الدخول نهائياً وإظهار الشاشة الرئيسية
             document.getElementById('auth-screen').classList.add('hidden');
             document.getElementById('main-screen').classList.remove('hidden');
         }
 
         function showMainScreen() {
             document.getElementById('room-screen').classList.add('hidden');
+            document.getElementById('auth-screen').classList.add('hidden');
             document.getElementById('main-screen').classList.remove('hidden');
         }
 
-        // فتح modal اختيار صفة الدخول للغرف العامة
-        function openRoleModal(roomName) {
+        function goBackScreen() {
+            const roomScreen = document.getElementById('room-screen');
+            const mainScreen = document.getElementById('main-screen');
+            const authScreen = document.getElementById('auth-screen');
+
+            if(!roomScreen.classList.contains('hidden')) {
+                leaveRoom();
+            } else if(!mainScreen.classList.contains('hidden')) {
+                mainScreen.classList.add('hidden');
+                authScreen.classList.remove('hidden');
+            } else {
+                alert('أنت في شاشة تسجيل الدخول بالفعل.');
+            }
+        }
+
+        // آلية اختيار الغرفة (طراز دي دي لايف)
+        function handleRoomSelection(roomName, hostName, viewerCount, hasHost) {
             selectedRoomToJoin = roomName;
-            document.getElementById('role-modal-room-title').innerText = 'انضمام إلى: ' + roomName;
-            document.getElementById('role-modal').classList.remove('hidden');
+            if(hasHost) {
+                // إذا كان للغرفة مضيف ومشاهدون حاليون -> يدخل مباشرة كمشاهد
+                currentUserRole = 'مشاهد';
+                enterRoomDirectly(hostName, viewerCount);
+            } else {
+                // إذا لم يكن لها مضيف -> يخير المستخدم بين مضيف أو مشاهد
+                document.getElementById('role-modal-room-title').innerText = roomName;
+                document.getElementById('role-modal').classList.remove('hidden');
+            }
+        }
+
+        function selectRoleOption(role) {
+            currentUserRole = role;
+            if(role === 'مشاهد') {
+                document.getElementById('btn-opt-viewer').className = 'bg-yellow-500 text-black border border-yellow-400 py-2.5 rounded-lg text-xs font-bold transition';
+                document.getElementById('btn-opt-host').className = 'bg-gray-800 border border-yellow-500/40 text-yellow-400 py-2.5 rounded-lg text-xs font-bold transition';
+            } else {
+                document.getElementById('btn-opt-host').className = 'bg-yellow-500 text-black border border-yellow-400 py-2.5 rounded-lg text-xs font-bold transition';
+                document.getElementById('btn-opt-viewer').className = 'bg-gray-800 border border-yellow-500/40 text-yellow-400 py-2.5 rounded-lg text-xs font-bold transition';
+            }
+        }
+
+        function confirmRoomEntry() {
+            document.getElementById('role-modal').classList.add('hidden');
+            enterRoomDirectly(currentUserName, 1);
         }
 
         function closeRoleModal() {
             document.getElementById('role-modal').classList.add('hidden');
         }
 
-        function selectRoleOption(role) {
-            currentUserRole = role;
-            if(role === 'مشاهد') {
-                document.getElementById('btn-opt-viewer').className = 'bg-yellow-500 text-black border border-yellow-400 py-2 rounded-lg text-xs font-bold transition';
-                document.getElementById('btn-opt-host').className = 'bg-gray-800 border border-yellow-500/40 text-yellow-400 py-2 rounded-lg text-xs font-bold transition';
-            } else {
-                document.getElementById('btn-opt-host').className = 'bg-yellow-500 text-black border border-yellow-400 py-2 rounded-lg text-xs font-bold transition';
-                document.getElementById('btn-opt-viewer').className = 'bg-gray-800 border border-yellow-500/40 text-yellow-400 py-2 rounded-lg text-xs font-bold transition';
-            }
-        }
-
-        function confirmRoomEntry() {
-            closeRoleModal();
+        function enterRoomDirectly(hostName, viewerCount) {
             document.getElementById('main-screen').classList.add('hidden');
             document.getElementById('room-screen').classList.remove('hidden');
 
             document.getElementById('active-room-name').innerText = selectedRoomToJoin;
+            document.getElementById('room-host-display').innerText = 'المضيف: ' + (hostName || currentUserName);
             document.getElementById('user-status-display').innerText = 'المستخدم: ' + currentUserName + ' | الصفة: ' + currentUserRole;
+            document.getElementById('room-viewer-count').innerText = '👥 ' + viewerCount;
 
             socket.emit('join-room', selectedRoomToJoin);
         }
@@ -308,6 +384,34 @@
             }
             document.getElementById('room-screen').classList.add('hidden');
             document.getElementById('main-screen').classList.remove('hidden');
+        }
+
+        // --- نظام هدايا دي دي لايف التفاعلية ---
+        function sendGift(giftName, giftPrice) {
+            if (userWallet < giftPrice) {
+                alert('⚠️ عذراً، رصيد محفظتك غير كافٍ لإرسال هذه الهدية. يرجى الشحن.');
+                return;
+            }
+            userWallet -= giftPrice;
+            document.getElementById('user-wallet-badge').innerText = 'المحفظة: ' + userWallet + ' ج.م';
+
+            const giftMsg = '🎁 أرسل هدية مميزة: ' + giftName + ' إلى المضيف!';
+            socket.emit('chat-message', { room: selectedRoomToJoin, user: currentUserName + ' (' + currentUserRole + ')', text: giftMsg });
+            
+            // إظهار قلوب وتأثيرات هدية
+            sendHeartAnimation();
+            alert('🎉 تم إرسال الهدية بنجاح!');
+        }
+
+        function sendHeartAnimation() {
+            const layer = document.getElementById('floating-hearts-layer');
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart text-2xl';
+            heart.innerHTML = ['❤️', '💖', '🎁', '🌹', '⭐'][Math.floor(Math.random() * 5)];
+            heart.style.left = Math.random() * 80 + 10 + '%';
+            heart.style.bottom = '10px';
+            layer.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 2000);
         }
 
         // --- نظام دفع استشارات النخبة (مالك ومرفت) المستقل تماماً ---
@@ -325,27 +429,28 @@
             const name = document.getElementById('pay-user-name').value.trim();
             if(name !== '') currentUserName = name;
 
-            alert('⏳ تم استلام إيصال التحويل بمبلغ 100 جنيه بنجاح. جاري مراجعة الدفع من قِبل ' + targetConsultant + '...');
+            alert('⏳ تم استلام إيصال التحويل بمبلغ 100 جنيه. جاري المراجعة من قِبل ' + targetConsultant + '...');
             closeConsultantPaymentModal();
 
-            // محاكاة تأكيد المستشار للدفع والاستقبال في الشات الخاص
             setTimeout(() => {
                 selectedRoomToJoin = 'غرفة الاستشارة الخاصة (' + targetConsultant + ')';
                 currentUserRole = 'عميل مستفيد';
-                
+
                 document.getElementById('main-screen').classList.add('hidden');
+                document.getElementById('auth-screen').classList.add('hidden');
                 document.getElementById('room-screen').classList.remove('hidden');
+
                 document.getElementById('active-room-name').innerText = selectedRoomToJoin;
-                document.getElementById('user-status-display').innerText = 'المستخدم: ' + currentUserName + ' | الصفة: عميل مؤكد الدفع';
+                document.getElementById('room-host-display').innerText = 'الخبير: ' + targetConsultant;
+                document.getElementById('user-status-display').innerText = 'المستخدم: ' + currentUserName + ' | الصفة: عميل استشارة مدفوعة';
 
                 socket.emit('join-room', selectedRoomToJoin);
 
-                // ترحيب المستشار في الشات
                 setTimeout(() => {
                     socket.emit('chat-message', { 
                         room: selectedRoomToJoin, 
-                        user: targetConsultant + ' (خبير قانوني)', 
-                        text: 'أهلاً بك يا ' + currentUserName + '. تم التأكد من وصول تحويل الـ 100 جنيه بنجاح. تفضل بعرض استشارتك أو أوراقك.' 
+                        user: targetConsultant + ' (خبير قانوني)',
+                        text: 'أهلاً بك يا ' + currentUserName + '. تم التحقق من تحويل الـ 100 جنيه بنجاح. تفضل بعرض استشارتك.'
                     });
                 }, 1000);
             }, 2500);
@@ -370,9 +475,7 @@
         function handleFileUpload(event) {
             const file = event.target.files[0];
             if (file) {
-                const fileName = file.name;
-                const fileMsg = '📄 [مستند مرفق: ' + fileName + ']';
-                socket.emit('chat-message', { room: selectedRoomToJoin, user: currentUserName + ' (' + currentUserRole + ')', text: fileMsg });
+                socket.emit('chat-message', { room: selectedRoomToJoin, user: currentUserName + ' (' + currentUserRole + ')', text: '📄 [مستند مرفق: ' + file.name + ']' });
             }
         }
 
@@ -389,18 +492,18 @@
                     videoElem.classList.remove('hidden');
                     placeholder.classList.add('hidden');
                     isCamActive = true;
-                    btn.className = 'bg-red-900/50 text-red-300 border border-red-500 px-2.5 py-1 rounded transition';
+                    btn.className = 'bg-red-900/50 text-red-300 border border-red-500 px-2.5 py-1 rounded';
                     btn.innerText = '📷 إيقاف الكاميرا';
                 } catch (err) {
-                    alert('تعذر الوصول إلى الكاميرا. تأكد من السماح بالصلاحيات.');
+                    alert('تعذر الوصول للكاميرا.');
                 }
             } else {
                 if (localStream) localStream.getVideoTracks().forEach(track => track.stop());
                 videoElem.classList.add('hidden');
                 placeholder.classList.remove('hidden');
                 isCamActive = false;
-                btn.className = 'bg-gray-800 hover:bg-gray-700 text-yellow-400 border border-yellow-500/30 px-2.5 py-1 rounded transition';
-                btn.innerText = '📷 الكاميرا';
+                btn.className = 'bg-gray-800 hover:bg-gray-700 text-yellow-400 border border-yellow-500/30 px-2.5 py-1 rounded';
+                btn.innerText = '📷 كاميرا';
             }
         }
 
@@ -411,11 +514,11 @@
                 localStream.getAudioTracks().forEach(track => { track.enabled = isMicActive; });
             }
             if(isMicActive) {
-                btn.className = 'bg-gray-800 hover:bg-gray-700 text-yellow-400 border border-yellow-500/30 px-2.5 py-1 rounded transition';
-                btn.innerText = '🎤 المايك';
+                btn.className = 'bg-gray-800 hover:bg-gray-700 text-yellow-400 border border-yellow-500/30 px-2.5 py-1 rounded';
+                btn.innerText = '🎤 مايك';
             } else {
-                btn.className = 'bg-red-900/50 text-red-300 border border-red-500 px-2.5 py-1 rounded transition';
-                btn.innerText = '🎤 المايك مكتوم';
+                btn.className = 'bg-red-900/50 text-red-300 border border-red-500 px-2.5 py-1 rounded';
+                btn.innerText = '🎤 مكتوم';
             }
         }
 
