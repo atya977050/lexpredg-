@@ -260,7 +260,310 @@
         </div>
     </div>
 
-    <script>
+    <section id="LEXBRIDGE_ROOM_DISCOVERY" class="hidden fixed inset-0 z-[9000] bg-gray-950 overflow-y-auto pb-24"><button id="LEX_ROOM_BACK" type="button" onclick="lexBridgeCloseScreen('LEXBRIDGE_ROOM_DISCOVERY')" class="w-full mb-4 bg-gray-900 border border-yellow-500/30 rounded-xl py-3 text-yellow-300 font-bold active:scale-95">↩️ رجوع</button><div class="max-w-4xl mx-auto p-4"><h2 class="text-xl font-black text-yellow-400 mb-4">🏠 الغرف المتاحة</h2><div class="overflow-hidden rounded-xl border border-yellow-500/30 bg-gray-900 mb-5"><div class="whitespace-nowrap py-3 text-sm text-yellow-300" style="animation:lexMarquee 14s linear infinite">📢 أهلاً بكم في LexBridge Live　✨ فعاليات جديدة يوميًا　🎁 تابع الغرف المتاحة الآن</div></div><div class="grid grid-cols-1 sm:grid-cols-2 gap-3"><button onclick="handleRoomSelection('غرفة ليكسبريدج','ليكسبريدج',0,false)" class="text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4"><b class="text-yellow-300">🏛️ غرفة ليكسبريدج</b><div class="text-xs text-gray-400 mt-2">غرفة مباشرة ومتاحة</div></button><button onclick="handleRoomSelection('الغرفة الملكية','المضيف الملكي',0,false)" class="text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4"><b class="text-yellow-300">👑 الغرفة الملكية</b><div class="text-xs text-gray-400 mt-2">انضم للمشاهدة والتفاعل</div></button><button onclick="handleRoomSelection('قاعة الأصدقاء','مضيف الأصدقاء',0,false)" class="text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4"><b class="text-yellow-300">👥 قاعة الأصدقاء</b><div class="text-xs text-gray-400 mt-2">اكتشف الموجودين الآن</div></button><button onclick="handleRoomSelection('قاعة الفعاليات','مضيف الفعاليات',0,false)" class="text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4"><b class="text-yellow-300">🎉 قاعة الفعاليات</b><div class="text-xs text-gray-400 mt-2">فعاليات وإعلانات مباشرة</div></button></div></div></section><style>@keyframes lexMarquee{from{transform:translateX(100%)}to{transform:translateX(-100%)}}</style><section id="LEXBRIDGE_ACTIVITY_SCREEN" class="hidden fixed inset-0 z-[9000] bg-gray-950 overflow-y-auto pb-24"><button id="LEX_ACTIVITY_BACK" type="button" onclick="lexBridgeCloseScreen('LEXBRIDGE_ACTIVITY_SCREEN')" class="w-full mb-4 bg-gray-900 border border-yellow-500/30 rounded-xl py-3 text-yellow-300 font-bold active:scale-95">↩️ رجوع</button><div class="max-w-4xl mx-auto p-4"><h2 class="text-xl font-black text-yellow-400 mb-4">⚡ النشاط</h2><div class="flex gap-2 mb-5"><button onclick="lexActivityTab('platform')" id="LEX_ACTIVITY_PLATFORM_BTN" class="flex-1 bg-yellow-500 text-black rounded-xl py-3 font-bold">منصة</button><button onclick="lexActivityTab('room')" id="LEX_ACTIVITY_ROOM_BTN" class="flex-1 bg-gray-800 text-yellow-400 rounded-xl py-3 font-bold">غرفة</button></div><div id="LEX_ACTIVITY_PLATFORM_LIST" class="space-y-3">
+<button type="button" onclick="lexActivityOpen('الحظ السعيد','🍀','شارك في فعاليات الحظ داخل المنصة واكتشف المكافآت المتاحة.')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">🍀 محطة الحظ السعيد<div class="text-xs text-gray-500 mt-1">فعاليات ومكافآت</div></button>
+<button type="button" onclick="lexActivityOpen('قاعة الأبراج','♈','استكشف الأبراج والفعاليات الخاصة بها داخل ليكسبريدج.')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">♈ قاعة الأبراج<div class="text-xs text-gray-500 mt-1">اكتشف برجك</div></button>
+<button type="button" onclick="lexActivityOpen('SVIP POWER','👑','مميزات وتجربة العضوية الملكية داخل المنصة.')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">👑 SVIP POWER<div class="text-xs text-gray-500 mt-1">مميزات خاصة</div></button>
+<button type="button" onclick="lexActivityOpen('تخصيص الإطار','🖼️','اختيار وتخصيص إطار الحساب والمظهر الملكي.')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">🖼️ DIDI LIVE تخصيص إطار<div class="text-xs text-gray-500 mt-1">تخصيص المظهر</div></button>
+<button type="button" onclick="lexActivityOpen('متجر DIDI LIVE','🛍️','استعرض الخدمات والمميزات المتاحة في المتجر.')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">🛍️ متجر DIDI LIVE<div class="text-xs text-gray-500 mt-1">المتجر والخدمات</div></button>
+<button type="button" onclick="lexActivityOpen('مليونير DIDI LIVE','💰','قسم خاص بالفعاليات والمميزات المرتبطة بالثروة والهدايا.')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">💰 مليونير DIDI LIVE<div class="text-xs text-gray-500 mt-1">فعاليات ومميزات</div></button>
+<button type="button" onclick="lexActivityOpen('قوانين التطبيق','📜','اطلع على القواعد والإرشادات العامة لاستخدام المنصة.')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">📜 DIDI LIVE قوانين التطبيق<div class="text-xs text-gray-500 mt-1">القواعد والإرشادات</div></button>
+</div><div id="LEX_ACTIVITY_ROOM_LIST" class="hidden space-y-3"><div class="bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300">🏠 الغرف المتاحة</div><div class="bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300">🎙️ الغرف المباشرة</div><div class="bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300">👑 الغرف الملكية</div></div></div></section>
+<script>
+function lexActivityOpen(title,icon,description){
+ const p=document.getElementById("LEX_ACTIVITY_PLATFORM_LIST");
+ if(!p)return;
+ p.dataset.activityDetails="1";
+ p.innerHTML='<div class="space-y-4 text-center"><div class="text-5xl">'+icon+'</div><div class="text-yellow-400 text-2xl font-bold">'+title+'</div><div class="bg-gray-900 border border-yellow-500/20 rounded-2xl p-5 text-gray-300">'+description+'</div><div class="bg-gray-900 rounded-2xl p-4 text-yellow-300">✨ هذه الوحدة متاحة داخل واجهة ليكسبريدج.</div><button type="button" onclick="lexActivityBackToPlatform()" class="w-full bg-yellow-500 text-black rounded-xl py-3 font-bold">↩️ رجوع إلى النشاط</button></div>';
+}
+
+function lexActivityBackToPlatform(){
+ const p=document.getElementById("LEX_ACTIVITY_PLATFORM_LIST");
+ if(!p)return;
+ p.dataset.activityDetails="0";
+ p.innerHTML='<button type="button" onclick="lexActivityOpen(\'الحظ السعيد\',\'🍀\',\'شارك في فعاليات الحظ داخل المنصة واكتشف المكافآت المتاحة.\')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">🍀 محطة الحظ السعيد<div class="text-xs text-gray-500 mt-1">فعاليات ومكافآت</div></button><button type="button" onclick="lexActivityOpen(\'قاعة الأبراج\',\'♈\',\'استكشف الأبراج والفعاليات الخاصة بها داخل ليكسبريدج.\')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">♈ قاعة الأبراج<div class="text-xs text-gray-500 mt-1">اكتشف برجك</div></button><button type="button" onclick="lexActivityOpen(\'SVIP POWER\',\'👑\',\'مميزات وتجربة العضوية الملكية داخل المنصة.\')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">👑 SVIP POWER<div class="text-xs text-gray-500 mt-1">مميزات خاصة</div></button><button type="button" onclick="lexActivityOpen(\'تخصيص الإطار\',\'🖼️\',\'اختيار وتخصيص إطار الحساب والمظهر الملكي.\')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">🖼️ DIDI LIVE تخصيص إطار<div class="text-xs text-gray-500 mt-1">تخصيص المظهر</div></button><button type="button" onclick="lexActivityOpen(\'متجر DIDI LIVE\',\'🛍️\',\'استعرض الخدمات والمميزات المتاحة في المتجر.\')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">🛍️ متجر DIDI LIVE<div class="text-xs text-gray-500 mt-1">المتجر والخدمات</div></button><button type="button" onclick="lexActivityOpen(\'مليونير DIDI LIVE\',\'💰\',\'قسم خاص بالفعاليات والمميزات المرتبطة بالثروة والهدايا.\')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">💰 مليونير DIDI LIVE<div class="text-xs text-gray-500 mt-1">فعاليات ومميزات</div></button><button type="button" onclick="lexActivityOpen(\'قوانين التطبيق\',\'📜\',\'اطلع على القواعد والإرشادات العامة لاستخدام المنصة.\')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">📜 DIDI LIVE قوانين التطبيق<div class="text-xs text-gray-500 mt-1">القواعد والإرشادات</div></button>';
+}
+
+function lexActivityTab(tab){
+ const p=document.getElementById("LEX_ACTIVITY_PLATFORM_LIST");
+ const r=document.getElementById("LEX_ACTIVITY_ROOM_LIST");
+ const pb=document.getElementById("LEX_ACTIVITY_PLATFORM_BTN");
+ const rb=document.getElementById("LEX_ACTIVITY_ROOM_BTN");
+ if(tab==="room"){
+  p.classList.add("hidden"); r.classList.remove("hidden");
+  rb.className="flex-1 bg-yellow-500 text-black rounded-xl py-3 font-bold";
+  pb.className="flex-1 bg-gray-800 text-yellow-400 rounded-xl py-3 font-bold";
+ }else{
+  r.classList.add("hidden"); p.classList.remove("hidden");
+  pb.className="flex-1 bg-yellow-500 text-black rounded-xl py-3 font-bold";
+  rb.className="flex-1 bg-gray-800 text-yellow-400 rounded-xl py-3 font-bold";
+ }
+}
+</script>
+<section id="LEXBRIDGE_MESSAGES_SCREEN" class="hidden fixed inset-0 z-[9000] bg-gray-950 overflow-y-auto pb-24"><button id="LEX_MESSAGES_BACK" type="button" onclick="lexBridgeCloseScreen('LEXBRIDGE_MESSAGES_SCREEN')" class="w-full mb-4 bg-gray-900 border border-yellow-500/30 rounded-xl py-3 text-yellow-300 font-bold active:scale-95">↩️ رجوع</button><div class="max-w-4xl mx-auto p-4"><h2 class="text-xl font-black text-yellow-400 mb-4">💬 الرسائل</h2><div class="flex gap-2 mb-5"><button onclick="lexMessagesTab('messages')" id="LEX_MESSAGES_BTN" class="flex-1 bg-yellow-500 text-black rounded-xl py-3 font-bold">الرسائل</button><button onclick="lexMessagesTab('friends')" id="LEX_FRIENDS_BTN" class="flex-1 bg-gray-800 text-yellow-400 rounded-xl py-3 font-bold">الأصدقاء</button></div><div id="LEX_MESSAGES_CONTENT" class="bg-gray-900 border border-yellow-500/20 rounded-2xl p-5 text-center text-gray-400 mb-4">لا توجد رسائل جديدة حاليًا</div><div id="LEX_FRIENDS_CONTENT" class="hidden bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 mb-4"><div class="text-yellow-300 font-bold mb-3">👥 الأصدقاء</div><div class="flex gap-2"><button class="flex-1 bg-gray-800 text-yellow-400 rounded-lg py-2 text-sm">تابع</button><button class="flex-1 bg-gray-800 text-yellow-400 rounded-lg py-2 text-sm">متابعين</button></div></div></div><script>
+function lexMessagesTab(tab){
+ const m=document.getElementById("LEX_MESSAGES_CONTENT");
+ const f=document.getElementById("LEX_FRIENDS_CONTENT");
+ const mb=document.getElementById("LEX_MESSAGES_BTN");
+ const fb=document.getElementById("LEX_FRIENDS_BTN");
+ if(tab==="friends"){
+  m.classList.add("hidden"); f.classList.remove("hidden");
+  fb.className="flex-1 bg-yellow-500 text-black rounded-xl py-3 font-bold";
+  mb.className="flex-1 bg-gray-800 text-yellow-400 rounded-xl py-3 font-bold";
+ }else{
+  f.classList.add("hidden"); m.classList.remove("hidden");
+  mb.className="flex-1 bg-yellow-500 text-black rounded-xl py-3 font-bold";
+  fb.className="flex-1 bg-gray-800 text-yellow-400 rounded-xl py-3 font-bold";
+ }
+}
+</script></div></section><section id="LEXBRIDGE_PROFILE_SCREEN" class="hidden fixed inset-0 z-[9000] bg-gray-950 overflow-y-auto pb-24"><button id="LEX_PROFILE_NAV_BACK" type="button" onclick="lexBridgeCloseScreen('LEXBRIDGE_PROFILE_SCREEN')" class="w-full mb-4 bg-gray-900 border border-yellow-500/30 rounded-xl py-3 text-yellow-300 font-bold active:scale-95">↩️ رجوع</button><button id="LEX_PROFILE_MAIN_BACK" type="button" onclick="document.getElementById('LEXBRIDGE_PROFILE_SCREEN').classList.add('hidden')" class="w-full mb-4 bg-gray-900 border border-yellow-500/30 rounded-xl py-3 text-yellow-300 font-bold active:scale-95">↩️ رجوع</button><div class="max-w-4xl mx-auto p-4"><h2 class="text-xl font-black text-yellow-400 mb-4">👤 أنا</h2><div class="grid grid-cols-4 gap-2 mb-5"><button onclick="lexProfileTab('friends')" id="LEX_PROFILE_FRIENDS" class="bg-yellow-500 text-black rounded-xl py-3 text-sm font-bold">أصدقاء</button><button onclick="lexProfileTab('following')" id="LEX_PROFILE_FOLLOWING" class="bg-gray-900 border border-yellow-500/20 rounded-xl py-3 text-yellow-300 text-sm">تابع</button><button onclick="lexProfileTab('followers')" id="LEX_PROFILE_FOLLOWERS" class="bg-gray-900 border border-yellow-500/20 rounded-xl py-3 text-yellow-300 text-sm">متابعين</button><button onclick="lexProfileTab('visitors')" id="LEX_PROFILE_VISITORS" class="bg-gray-900 border border-yellow-500/20 rounded-xl py-3 text-yellow-300 text-sm">الزوار</button></div><div id="LEX_PROFILE_TAB_CONTENT" class="bg-gray-900 border border-yellow-500/20 rounded-2xl p-5 text-center text-gray-400 mb-4">لا يوجد أصدقاء حاليًا</div><script>
+function lexProfileTab(tab){
+ const c=document.getElementById("LEX_PROFILE_TAB_CONTENT");
+ const ids=["LEX_PROFILE_FRIENDS","LEX_PROFILE_FOLLOWING","LEX_PROFILE_FOLLOWERS","LEX_PROFILE_VISITORS"];
+ ids.forEach(id=>{
+  const b=document.getElementById(id);
+  if(b)b.className="bg-gray-900 border border-yellow-500/20 rounded-xl py-3 text-yellow-300 text-sm";
+ });
+ const map={friends:["LEX_PROFILE_FRIENDS","لا يوجد أصدقاء حاليًا"],following:["LEX_PROFILE_FOLLOWING","لا توجد حسابات تتابعها حاليًا"],followers:["LEX_PROFILE_FOLLOWERS","لا يوجد متابعون حاليًا"],visitors:["LEX_PROFILE_VISITORS","لا يوجد زوار حاليًا"]};
+ const x=map[tab]||map.friends;
+ document.getElementById(x[0]).className="bg-yellow-500 text-black rounded-xl py-3 text-sm font-bold";
+ c.innerText=x[1];
+}
+</script><div class="space-y-3"><div onclick="lexBridgeNotifications()" class="bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 cursor-pointer active:scale-95">🔔 الإشعارات</div>
+  <div onclick="lexBridgeSettings()" class="bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 cursor-pointer active:scale-95">⚙️ الإعدادات</div>
+  <div onclick="lexBridgeHelp()" class="bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 cursor-pointer active:scale-95">🆘 المساعدة والدعم</div>
+  <div onclick="lexBridgeAbout()" class="bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 cursor-pointer active:scale-95">⚖️ حول ليكسبريدج</div>
+  <div onclick="lexBridgePrivacy()" class="bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 cursor-pointer active:scale-95">🔐 الخصوصية والأمان</div>
+  <div onclick="lexBridgeAppearance()" class="bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 cursor-pointer active:scale-95">🎨 اللغة والمظهر</div>
+  <div onclick="lexBridgeLogout()" class="bg-red-950/40 border border-red-500/30 rounded-2xl p-4 text-red-300 cursor-pointer active:scale-95">🚪 تسجيل الخروج</div>
+  <div onclick="lexBridgeMyRoom()" class="bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 cursor-pointer active:scale-95">🏠 غرفتي</div><div onclick="lexBridgeWallet()" class="bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 cursor-pointer active:scale-95">💰 محفظة</div><div onclick="lexBridgeFeatures()" class="bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 cursor-pointer active:scale-95">👑 مميزات</div><div class="bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300">🌐 متعدد اللغات</div><div class="bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300">💬 تعليق</div><div class="bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300">⚙️ الإعدادات</div></div></div></section><script>function lexBridgeRecharge(){
+ const amount=prompt("💰 أدخل مبلغ الشحن بالجنيه:");
+ if(!amount || !Number.isFinite(Number(amount)) || Number(amount)<=0){
+  alert("⚠️ أدخل مبلغًا صحيحًا.");
+  return;
+ }
+ const reference=prompt("📋 أدخل رقم/مرجع عملية الدفع:");
+ if(!reference){
+  alert("⚠️ يجب إدخال رقم عملية الدفع.");
+  return;
+ }
+ alert("✅ تم تسجيل طلب الشحن بقيمة "+Number(amount).toFixed(2)+" ج.مرقم العملية: "+reference+"الحالة: قيد المراجعة.");
+}
+
+function lexBridgeGifts(){
+ const content=document.getElementById("LEX_PROFILE_TAB_CONTENT");
+ if(content){
+  content.innerHTML='<div class="space-y-3"><button onclick="lexBridgeFeatureBack()" class="w-full bg-gray-800 border border-yellow-500/30 text-yellow-400 rounded-xl py-3 font-bold">↩️ رجوع إلى المميزات</button><div class="space-y-4 text-right"><div class="text-center text-4xl">🎁</div><div class="text-yellow-400 text-xl font-bold text-center">مركز الهدايا</div><div class="bg-gray-900 rounded-xl p-3">💰 الرصيد: <span class="text-yellow-400 font-bold">'+userWallet+' ج.م</span></div><div class="grid grid-cols-2 gap-3"><button onclick="sendGift(\'🌹 وردة\',10)" class="bg-gray-900 border border-yellow-500/20 rounded-xl p-3 text-yellow-300 active:scale-95">🌹 وردة<br><span class="text-xs">10 ج.م</span></button><button onclick="sendGift(\'💎 ألماسة\',50)" class="bg-gray-900 border border-yellow-500/20 rounded-xl p-3 text-yellow-300 active:scale-95">💎 ألماسة<br><span class="text-xs">50 ج.م</span></button><button onclick="sendGift(\'👑 تاج\',100)" class="bg-gray-900 border border-yellow-500/20 rounded-xl p-3 text-yellow-300 active:scale-95">👑 تاج<br><span class="text-xs">100 ج.م</span></button><button onclick="sendGift(\'🎁 هدية ملكية\',250)" class="bg-gray-900 border border-yellow-500/20 rounded-xl p-3 text-yellow-300 active:scale-95">🎁 ملكية<br><span class="text-xs">250 ج.م</span></button></div><div class="text-gray-400 text-xs text-center">الإرسال يستخدم نظام الهدايا الموجود داخل الغرفة.</div></div>';
+ }
+}
+ lexBridgeAddBackButton();
+
+function lexBridgeRoomFeatures(){
+ const content=document.getElementById("LEX_PROFILE_TAB_CONTENT");
+ if(content){
+  content.innerHTML='<div class="space-y-3"><button onclick="lexBridgeFeatureBack()" class="w-full bg-gray-800 border border-yellow-500/30 text-yellow-400 rounded-xl py-3 font-bold">↩️ رجوع إلى المميزات</button><div class="space-y-3 text-right"><div class="text-center text-4xl">🎙️</div><div class="text-yellow-400 text-xl font-bold text-center">مميزات الغرف والبث</div><button onclick="lexBridgeMyRoom()" class="w-full bg-gray-900 border border-yellow-500/20 rounded-xl p-3 text-yellow-300">🏠 دخول غرفتي</button><button onclick="lexBridgeOpen(\'LEXBRIDGE_ROOM_DISCOVERY\')" class="w-full bg-gray-900 border border-yellow-500/20 rounded-xl p-3 text-yellow-300">🏠 استكشاف الغرف</button><button onclick="enterRoomDirectly(currentUserName,0)" class="w-full bg-gray-900 border border-yellow-500/20 rounded-xl p-3 text-yellow-300">🎙️ فتح غرفة البث</button><button onclick="toggleMic()" class="w-full bg-gray-900 border border-yellow-500/20 rounded-xl p-3 text-yellow-300">🎤 تشغيل / إيقاف المايك</button><div class="text-gray-400 text-xs text-center">الكاميرا والمايك يستخدمان الوظائف الأصلية للغرفة.</div></div>';
+ }
+}
+ lexBridgeAddBackButton();
+
+function lexBridgeBadgeFeatures(){
+ const content=document.getElementById("LEX_PROFILE_TAB_CONTENT");
+ if(content){
+  content.innerHTML='<div class="space-y-3"><button onclick="lexBridgeFeatureBack()" class="w-full bg-gray-800 border border-yellow-500/30 text-yellow-400 rounded-xl py-3 font-bold">↩️ رجوع إلى المميزات</button><div class="space-y-4 text-center"><div class="text-5xl">✨</div><div class="text-yellow-400 text-xl font-bold">شارة العضوية والمميزات الخاصة</div><div id="lex-badge-status" class="bg-gray-900 rounded-xl p-4 text-yellow-300">⭐ الشارة الملكية جاهزة للعرض</div><button onclick="lexBridgeToggleBadge()" class="w-full bg-yellow-500 text-black rounded-xl py-3 font-bold">✨ تفعيل / إخفاء الشارة</button></div>';
+ }
+}
+ lexBridgeAddBackButton();
+
+function lexBridgeToggleBadge(){
+ const el=document.getElementById("lex-badge-status");
+ if(!el)return;
+ const active=el.dataset.active==="1";
+ el.dataset.active=active?"0":"1";
+ el.innerText=active?"◻️ الشارة مخفية":"⭐ الشارة مفعّلة";
+}
+
+let lexBridgeVipActive=false;
+
+function lexBridgeFeatureBack(){
+ const content=document.getElementById("LEX_PROFILE_TAB_CONTENT");
+ if(content) lexBridgeFeatures();
+}
+
+function lexBridgeVIP(){
+ const content=document.getElementById("LEX_PROFILE_TAB_CONTENT");
+ if(content){
+  content.innerHTML='<div class="space-y-3"><button onclick="lexBridgeFeatureBack()" class="w-full bg-gray-800 border border-yellow-500/30 text-yellow-400 rounded-xl py-3 font-bold">↩️ رجوع إلى المميزات</button><div class="text-center space-y-4"><div class="text-5xl">👑</div><div class="text-yellow-400 text-2xl font-bold">عضوية VIP</div><div class="text-gray-300">استمتع بمميزات العضوية الملكية داخل ليكسبريدج.</div><div class="bg-gray-900 rounded-xl p-3 text-yellow-300">'+(lexBridgeVipActive?'⭐ عضوية VIP مفعّلة':'◻️ عضوية VIP غير مفعّلة')+'</div><button onclick="lexBridgeToggleVIP()" class="w-full bg-yellow-500 text-black rounded-xl py-3 font-bold">'+(lexBridgeVipActive?'إيقاف VIP':'⭐ تفعيل VIP')+'</button></div>';
+ }
+}
+ lexBridgeAddBackButton();
+
+function lexBridgeToggleVIP(){
+ lexBridgeVipActive=!lexBridgeVipActive;
+ lexBridgeVIP();
+}
+
+function lexBridgeFeatures(){
+ const content=document.getElementById("LEX_PROFILE_TAB_CONTENT");
+ if(content){
+  content.innerHTML='<div class="space-y-3 text-right"><div class="text-center text-3xl">👑</div><div onclick="lexBridgeVIP()" class="bg-gray-900 rounded-xl p-3 text-yellow-300 cursor-pointer active:scale-95">👑 عضوية VIP</div><div onclick="lexBridgeGifts()" class="bg-gray-900 rounded-xl p-3 text-yellow-300 cursor-pointer active:scale-95">🎁 إرسال واستقبال الهدايا</div><div onclick="lexBridgeRoomFeatures()" class="bg-gray-900 rounded-xl p-3 text-yellow-300 cursor-pointer active:scale-95">🎙️ مميزات الغرف والبث</div><div onclick="lexBridgeBadgeFeatures()" class="bg-gray-900 rounded-xl p-3 text-yellow-300 cursor-pointer active:scale-95">✨ شارة العضوية والمميزات الخاصة</div></div>';
+ }
+}
+ lexBridgeAddBackButton();
+function lexBridgeWallet(){
+ const content=document.getElementById("LEX_PROFILE_TAB_CONTENT");
+ if(content){
+  content.innerHTML='<div class="text-center space-y-3"><div class="text-4xl">💰</div><div class="text-yellow-400 text-2xl font-bold">'+userWallet+' ج.م</div><div class="text-gray-300">رصيد المحفظة الحالي</div><button onclick="lexBridgeRecharge()" class="w-full bg-yellow-500 text-black rounded-xl py-3 font-bold">➕ شحن المحفظة</button></div>';
+ }
+}
+ lexBridgeAddBackButton();
+function lexBridgeLogout(){
+ const ok=confirm("🚪 هل تريد تسجيل الخروج من حسابك؟");
+ if(!ok)return;
+
+ const overlays=[
+  "LEXBRIDGE_ROOM_DISCOVERY",
+  "LEXBRIDGE_ACTIVITY_SCREEN",
+  "LEXBRIDGE_MESSAGES_SCREEN",
+  "LEXBRIDGE_PROFILE_SCREEN"
+ ];
+ overlays.forEach(id=>{
+  const e=document.getElementById(id);
+  if(e)e.classList.add("hidden");
+ });
+
+ const room=document.getElementById("room-screen");
+ const main=document.getElementById("main-screen");
+ if(room)room.classList.add("hidden");
+ if(main)main.classList.remove("hidden");
+
+ currentUserRole="مشاهد";
+ selectedRoomToJoin="";
+ window.scrollTo(0,0);
+
+ alert("✅ تم تسجيل الخروج من الجلسة الحالية.");
+}
+function lexBridgeAppearance(){
+ const content=document.getElementById("LEX_PROFILE_TAB_CONTENT");
+ if(!content)return;
+
+ content.innerHTML='<div class="space-y-4 text-right"><div class="text-center text-4xl">🎨</div><div class="text-yellow-400 text-xl font-bold text-center">اللغة والمظهر</div><div class="bg-gray-900 border border-yellow-500/20 rounded-xl p-4"><div class="text-yellow-300 font-bold mb-3">🌐 اللغة</div><button type="button" onclick="lexBridgeLanguage(this)" class="w-full bg-yellow-500 text-black rounded-xl py-3 font-bold">العربية</button></div><div class="bg-gray-900 border border-yellow-500/20 rounded-xl p-4"><div class="text-yellow-300 font-bold mb-3">✨ المظهر</div><div class="grid grid-cols-2 gap-3"><button type="button" onclick="lexBridgeTheme(this,&quot;royal&quot;)" class="bg-yellow-500 text-black rounded-xl py-3 font-bold">👑 ملكي</button><button type="button" onclick="lexBridgeTheme(this,&quot;dark&quot;)" class="bg-gray-800 text-yellow-300 rounded-xl py-3 font-bold">🌙 داكن</button></div></div><div class="text-gray-400 text-xs text-center">المظهر الملكي هو التصميم الأساسي لمنصة ليكسبريدج.</div></div>';
+
+ lexBridgeAddBackButton();
+}
+
+function lexBridgeLanguage(button){
+ if(button)button.innerText=button.innerText==="العربية"?"العربية ✓":"العربية";
+}
+
+function lexBridgeTheme(button,theme){
+ if(theme==="royal"){
+  document.body.classList.remove("bg-gray-950");
+  document.body.classList.add("bg-black");
+ }else{
+  document.body.classList.remove("bg-black");
+  document.body.classList.add("bg-gray-950");
+ }
+}
+function lexBridgePrivacy(){
+ const content=document.getElementById("LEX_PROFILE_TAB_CONTENT");
+ if(!content)return;
+
+ content.innerHTML='<div class="space-y-4 text-right"><div class="text-center text-4xl">🔐</div><div class="text-yellow-400 text-xl font-bold text-center">الخصوصية والأمان</div><button type="button" onclick="lexBridgePrivacyItem(this)" class="w-full bg-gray-900 border border-yellow-500/20 rounded-xl p-4 text-yellow-300 text-right">👁️ ظهور الحساب<div class="hidden mt-2 text-gray-300 text-sm">يمكنك التحكم في حالة ظهورك من إعدادات الظهور داخل المنصة.</div></button><button type="button" onclick="lexBridgePrivacyItem(this)" class="w-full bg-gray-900 border border-yellow-500/20 rounded-xl p-4 text-yellow-300 text-right">💬 الرسائل والاتصال<div class="hidden mt-2 text-gray-300 text-sm">تظهر الرسائل والتفاعلات من خلال وظائف التواصل الموجودة داخل المنصة.</div></button><button type="button" onclick="lexBridgePrivacyItem(this)" class="w-full bg-gray-900 border border-yellow-500/20 rounded-xl p-4 text-yellow-300 text-right">🎥 الكاميرا والمايك<div class="hidden mt-2 text-gray-300 text-sm">صلاحية الكاميرا والمايك يتحكم بها المتصفح والجهاز، ويمكن إيقافها من إعدادات الجهاز.</div></button><div class="bg-gray-900 rounded-xl p-4 text-gray-400 text-sm text-center">لا تدخل كلمات المرور أو بيانات الدفع في الرسائل العامة.</div></div>';
+
+ lexBridgeAddBackButton();
+}
+
+function lexBridgePrivacyItem(button){
+ const answer=button.querySelector("div");
+ if(!answer)return;
+ answer.classList.toggle("hidden");
+}
+function lexBridgeAbout(){
+ const content=document.getElementById("LEX_PROFILE_TAB_CONTENT");
+ if(!content)return;
+
+ content.innerHTML='<div class="space-y-4 text-right"><div class="text-center text-5xl">⚖️</div><div class="text-yellow-400 text-2xl font-bold text-center">ليكسبريدج</div><div class="bg-gray-900 border border-yellow-500/20 rounded-xl p-4 text-gray-300 text-center">منصة اجتماعية واستشارية رقمية تجمع الغرف والتواصل المباشر والمحتوى والخدمات الذكية في تجربة واحدة.</div><div class="bg-gray-900 rounded-xl p-4"><div class="text-yellow-400 font-bold mb-2">✨ المميزات</div><div class="text-gray-300 text-sm space-y-2"><div>🏠 غرف وتفاعل مباشر</div><div>💬 رسائل وتواصل اجتماعي</div><div>🎁 نظام هدايا ومحفظة</div><div>👑 عضويات ومميزات خاصة</div><div>🆘 مركز مساعدة ودعم</div></div></div><div class="bg-gray-900 rounded-xl p-4 text-center text-gray-400 text-sm">الإصدار: LexBridge Live 2.1.0</div></div>';
+
+ lexBridgeAddBackButton();
+}
+function lexBridgeHelp(){
+ const content=document.getElementById("LEX_PROFILE_TAB_CONTENT");
+ if(!content)return;
+
+ content.innerHTML='<div class="space-y-4 text-right"><div class="text-center text-4xl">🆘</div><div class="text-yellow-400 text-xl font-bold text-center">المساعدة والدعم</div><button type="button" onclick="lexBridgeHelpItem(this)" class="w-full bg-gray-900 border border-yellow-500/20 rounded-xl p-4 text-yellow-300 text-right">❓ كيف أدخل غرفة؟<div class="hidden mt-2 text-gray-300 text-sm">افتح «الغرف» من الشريط السفلي ثم اختر الغرفة وحدد الصفة المناسبة.</div></button><button type="button" onclick="lexBridgeHelpItem(this)" class="w-full bg-gray-900 border border-yellow-500/20 rounded-xl p-4 text-yellow-300 text-right">💰 كيف تعمل المحفظة؟<div class="hidden mt-2 text-gray-300 text-sm">المحفظة تستخدم لرصيد الهدايا والوظائف المالية المتاحة داخل المنصة.</div></button><button type="button" onclick="lexBridgeHelpItem(this)" class="w-full bg-gray-900 border border-yellow-500/20 rounded-xl p-4 text-yellow-300 text-right">🎁 كيف أرسل هدية؟<div class="hidden mt-2 text-gray-300 text-sm">ادخل الغرفة ثم استخدم مركز الهدايا لإرسال الهدية للمضيف إذا كان الرصيد كافيًا.</div></button><button type="button" onclick="lexBridgeHelpItem(this)" class="w-full bg-gray-900 border border-yellow-500/20 rounded-xl p-4 text-yellow-300 text-right">🎙️ الكاميرا والمايك لا يعملان<div class="hidden mt-2 text-gray-300 text-sm">تأكد من منح المتصفح صلاحية الكاميرا والمايك ثم جرّب تشغيلهما من أدوات الغرفة.</div></button><div class="bg-gray-900 rounded-xl p-4 text-gray-400 text-sm text-center">إذا لم تجد إجابة، يمكنك التواصل مع إدارة المنصة.</div></div>';
+
+ lexBridgeAddBackButton();
+}
+
+function lexBridgeHelpItem(button){
+ const answer=button.querySelector("div");
+ if(!answer)return;
+ answer.classList.toggle("hidden");
+}
+function lexBridgeSettings(){
+ const content=document.getElementById("LEX_PROFILE_TAB_CONTENT");
+ if(!content)return;
+
+ content.innerHTML='<div class="space-y-4 text-right"><div class="text-center text-4xl">⚙️</div><div class="text-yellow-400 text-xl font-bold text-center">الإعدادات</div><button type="button" onclick="lexBridgeToggleSetting(this)" class="w-full bg-gray-900 border border-yellow-500/20 rounded-xl p-4 text-yellow-300 flex items-center justify-between"><span>🔔 الإشعارات</span><span>مفعّلة</span></button><button type="button" onclick="lexBridgeToggleSetting(this)" class="w-full bg-gray-900 border border-yellow-500/20 rounded-xl p-4 text-yellow-300 flex items-center justify-between"><span>🔊 أصوات التطبيق</span><span>مفعّلة</span></button><button type="button" onclick="lexBridgeToggleSetting(this)" class="w-full bg-gray-900 border border-yellow-500/20 rounded-xl p-4 text-yellow-300 flex items-center justify-between"><span>🟢 الظهور متصل</span><span>مفعّل</span></button><div class="bg-gray-900 rounded-xl p-4 text-gray-400 text-sm text-center">إعدادات الحساب الأساسية محفوظة داخل المنصة.</div></div>';
+
+ lexBridgeAddBackButton();
+}
+
+function lexBridgeToggleSetting(button){
+ const span=button.querySelector("span:last-child");
+ if(!span)return;
+ const active=span.innerText.includes("مفعّل");
+ span.innerText=active?"متوقفة":"مفعّلة";
+}
+function lexBridgeNotifications(){
+ const content=document.getElementById("LEX_PROFILE_TAB_CONTENT");
+ if(!content)return;
+
+ content.innerHTML='<div class="space-y-4 text-right"><div class="text-center text-4xl">🔔</div><div class="text-yellow-400 text-xl font-bold text-center">الإشعارات</div><div class="bg-gray-900 border border-yellow-500/20 rounded-xl p-4 text-yellow-300">🎉 لا توجد إشعارات جديدة حاليًا.</div><div class="bg-gray-900 border border-yellow-500/20 rounded-xl p-4 text-gray-300">📢 ستظهر هنا إشعارات الغرف والهدايا والمتابعين والتحديثات.</div></div>';
+ lexBridgeAddBackButton();
+}
+function lexBridgeMyRoom(){
+ const profile=document.getElementById("LEXBRIDGE_PROFILE_SCREEN");
+ if(profile) profile.classList.add("hidden");
+ selectedRoomToJoin = "غرفة ليكسبريدج";
+ currentUserRole = "مشاهد";
+ enterRoomDirectly(currentUserName, 0);
+}
+ lexBridgeAddBackButton();
+function lexBridgeProfileBack(){
+  const p=document.getElementById("LEXBRIDGE_PROFILE_SCREEN");
+  if(p)p.classList.remove("hidden");
+  const c=document.getElementById("LEX_PROFILE_TAB_CONTENT");
+  if(c)lexProfileTab("friends");
+}
+function lexBridgeAddBackButton(){
+ const c=document.getElementById("LEX_PROFILE_TAB_CONTENT");
+ if(!c) return;
+ const old=c.querySelector('[data-lex-profile-back]');
+ if(old) old.remove();
+ const b=document.createElement("button");
+ b.setAttribute("data-lex-profile-back","1");
+ b.type="button";
+ b.onclick=lexBridgeProfileBack;
+ b.className="w-full mb-3 bg-gray-900 border border-yellow-500/30 rounded-xl py-3 text-yellow-300 font-bold active:scale-95";
+ b.innerText="↩️ رجوع إلى أنا";
+ c.prepend(b);
+}
+
+function lexBridgeCloseScreen(id){
+ const e=document.getElementById(id);
+ if(e)e.classList.add("hidden");
+
+ const main=document.getElementById("main-screen");
+ const room=document.getElementById("room-screen");
+
+ if(main) main.classList.remove("hidden");
+ if(room) room.classList.add("hidden");
+
+ window.scrollTo(0,0);
+}
+function lexBridgeOpen(id){["LEXBRIDGE_ROOM_DISCOVERY","LEXBRIDGE_ACTIVITY_SCREEN","LEXBRIDGE_MESSAGES_SCREEN","LEXBRIDGE_PROFILE_SCREEN"].forEach(x=>{const e=document.getElementById(x);if(e)e.classList.add("hidden")});const e=document.getElementById(id);if(e)e.classList.remove("hidden")}</script><div id="LEXBRIDGE_NEW_BOTTOM_BAR" class="fixed bottom-0 left-0 right-0 z-[9999] bg-gray-950/98 border-t border-yellow-500/40 backdrop-blur-lg"><div class="max-w-4xl mx-auto grid grid-cols-4 gap-1 p-2"><button onclick="lexBridgeOpen('LEXBRIDGE_ROOM_DISCOVERY')" class="gold-btn py-3 rounded-xl text-xs font-bold">🏠<br>غرفة</button><button onclick="lexBridgeOpen('LEXBRIDGE_ACTIVITY_SCREEN')" class="bg-gray-800 text-yellow-400 py-3 rounded-xl text-xs font-bold">⚡<br>نشاط</button><button onclick="lexBridgeOpen('LEXBRIDGE_MESSAGES_SCREEN')" class="bg-gray-800 text-yellow-400 py-3 rounded-xl text-xs font-bold">💬<br>الرسائل</button><button onclick="lexBridgeOpen('LEXBRIDGE_PROFILE_SCREEN')" class="bg-gray-800 text-yellow-400 py-3 rounded-xl text-xs font-bold">👤<br>أنا</button></div></div>
+<script>
         const socket = io();
         let authTabMode = 'login';
         let currentUserName = 'عطيه';
@@ -334,6 +637,8 @@
         // آلية اختيار الغرفة (طراز دي دي لايف)
         function handleRoomSelection(roomName, hostName, viewerCount, hasHost) {
             selectedRoomToJoin = roomName;
+            const discovery = document.getElementById('LEXBRIDGE_ROOM_DISCOVERY');
+            if (discovery) discovery.classList.add('hidden');
             if(hasHost) {
                 // إذا كان للغرفة مضيف ومشاهدون حاليون -> يدخل مباشرة كمشاهد
                 currentUserRole = 'مشاهد';
