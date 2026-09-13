@@ -273,15 +273,141 @@
 function lexActivityOpen(title,icon,description){
  const p=document.getElementById("LEX_ACTIVITY_PLATFORM_LIST");
  if(!p)return;
+
+ const data={
+  "الحظ السعيد":{
+   items:["🎯 فعاليات الحظ اليومية","🎁 مكافآت وهدايا خاصة","🏆 جوائز للمشاركين"],
+   action:"ابدأ فعالية الحظ"
+  },
+  "قاعة الأبراج":{
+   items:["♈ الحمل","♉ الثور","♊ الجوزاء","♋ السرطان","♌ الأسد","♍ العذراء"],
+   action:"اختيار البرج"
+  },
+  "SVIP POWER":{
+   items:["👑 أولوية ومميزات VIP","✨ شارة ملكية خاصة","🎁 مزايا وهدايا حصرية"],
+   action:"استعراض مميزات VIP"
+  },
+  "تخصيص الإطار":{
+   items:["🖼️ الإطار الملكي","✨ إطار ذهبي","👑 إطار SVIP"],
+   action:"اختيار الإطار"
+  },
+  "متجر DIDI LIVE":{
+   items:["🎁 الهدايا","✨ الإطارات","👑 العضويات","💎 المميزات الخاصة"],
+   action:"فتح المتجر"
+  },
+  "مليونير DIDI LIVE":{
+   items:["💰 فعاليات الثروة","🏆 ترتيب المليونير","🎁 مكافآت خاصة"],
+   action:"استعراض الفعاليات"
+  },
+  "قوانين التطبيق":{
+   items:["📜 احترام المستخدمين","🔐 حماية الحساب والبيانات","🚫 منع الإساءة والمحتوى المخالف","⚖️ الالتزام بقواعد المنصة"],
+   action:"قرأت القوانين"
+  }
+ };
+
+ const d=data[title]||{items:["✨ هذه الوحدة متاحة داخل ليكسبريدج."],action:"متابعة"};
+
  p.dataset.activityDetails="1";
- p.innerHTML='<div class="space-y-4 text-center"><div class="text-5xl">'+icon+'</div><div class="text-yellow-400 text-2xl font-bold">'+title+'</div><div class="bg-gray-900 border border-yellow-500/20 rounded-2xl p-5 text-gray-300">'+description+'</div><div class="bg-gray-900 rounded-2xl p-4 text-yellow-300">✨ هذه الوحدة متاحة داخل واجهة ليكسبريدج.</div><button type="button" onclick="lexActivityBackToPlatform()" class="w-full bg-yellow-500 text-black rounded-xl py-3 font-bold">↩️ رجوع إلى النشاط</button></div>';
+ p.innerHTML=
+ '<div class="space-y-4">'+
+ '<button type="button" onclick="lexActivityBackToPlatform()" class="w-full bg-gray-900 border border-yellow-500/30 text-yellow-300 rounded-xl py-3 font-bold active:scale-95">↩️ رجوع إلى النشاط</button>'+
+ '<div class="text-center space-y-2">'+
+ '<div class="text-6xl">'+icon+'</div>'+
+ '<div class="text-yellow-400 text-2xl font-bold">'+title+'</div>'+
+ '<div class="text-gray-400 text-sm">'+description+'</div>'+
+ '</div>'+
+ '<div class="bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 space-y-3">'+
+ d.items.map((x,i)=>'<button type="button" onclick="lexActivityItem(\''+title+'\','+i+')" class="w-full flex items-center gap-3 bg-black/40 rounded-xl p-3 text-gray-200 text-right active:scale-95">'+x+'</button>').join('')+
+ '</div>'+
+ '<button type="button" onclick="lexActivityAction(\''+title+'\')" class="w-full bg-yellow-500 text-black rounded-xl py-3 font-bold active:scale-95">✨ '+d.action+'</button>'+
+ '<button type="button" onclick="lexActivityShare(\''+title+'\')" class="w-full bg-gray-800 border border-yellow-500/30 text-yellow-300 rounded-xl py-3 font-bold active:scale-95">📤 مشاركة</button>'+
+ '<div id="LEX_ACTIVITY_ACTION_RESULT" class="hidden bg-green-950/40 border border-green-500/20 text-green-300 rounded-xl p-4 text-center"></div>'+
+ '</div>';
+}
+
+function lexActivityAction(title){
+ const result=document.getElementById("LEX_ACTIVITY_ACTION_RESULT");
+ if(!result)return;
+ result.classList.remove("hidden");
+ result.innerText="✅ تم تفعيل اختيارك في قسم «"+title+"» داخل واجهة ليكسبريدج.";
+}
+
+function lexActivityItem(title,index){
+ const result=document.getElementById("LEX_ACTIVITY_ACTION_RESULT");
+ if(!result)return;
+
+ const actions={
+  "الحظ السعيد":[
+   "🍀 تم اختيار فعالية الحظ اليومية.",
+   "🎁 تم فتح قسم المكافآت المتاحة.",
+   "🏆 تم فتح جوائز المشاركين."
+  ],
+  "قاعة الأبراج":[
+   "♈ برج الحمل: طاقة وحماس اليوم.",
+   "♉ برج الثور: ثبات وتركيز.",
+   "♊ برج الجوزاء: تواصل وحيوية.",
+   "♋ برج السرطان: هدوء واهتمام.",
+   "♌ برج الأسد: حضور وثقة.",
+   "♍ برج العذراء: تنظيم ودقة."
+  ],
+  "SVIP POWER":[
+   "👑 أولوية VIP: الميزة جاهزة للعرض.",
+   "✨ الشارة الملكية: تم اختيارها.",
+   "🎁 المزايا الحصرية: تم فتح القسم."
+  ],
+  "تخصيص الإطار":[
+   "🖼️ تم اختيار الإطار الملكي.",
+   "✨ تم اختيار الإطار الذهبي.",
+   "👑 تم اختيار إطار SVIP."
+  ],
+  "متجر DIDI LIVE":[
+   "🎁 تم فتح قسم الهدايا.",
+   "✨ تم فتح قسم الإطارات.",
+   "👑 تم فتح قسم العضويات.",
+   "💎 تم فتح المميزات الخاصة."
+  ],
+  "مليونير DIDI LIVE":[
+   "💰 تم فتح فعاليات الثروة.",
+   "🏆 تم فتح ترتيب المليونير.",
+   "🎁 تم فتح المكافآت الخاصة."
+  ],
+  "قوانين التطبيق":[
+   "📜 تم فتح بند احترام المستخدمين.",
+   "🔐 تم فتح بند حماية الحساب والبيانات.",
+   "🚫 تم فتح بند المحتوى المخالف.",
+   "⚖️ تم فتح بند الالتزام بالقواعد."
+  ]
+ };
+
+ const list=actions[title]||["✅ تم اختيار العنصر."];
+ result.classList.remove("hidden");
+ result.innerText=list[index]||list[0];
+ result.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+
+function lexActivityShare(title){
+ const text="✨ "+title+" — متاح الآن داخل منصة ليكسبريدج";
+ if(navigator.share){
+  navigator.share({title:"ليكسبريدج",text:text}).catch(()=>{});
+ }else if(navigator.clipboard){
+  navigator.clipboard.writeText(text).then(()=>alert("✅ تم نسخ نص المشاركة."));
+ }else{
+  alert(text);
+ }
 }
 
 function lexActivityBackToPlatform(){
  const p=document.getElementById("LEX_ACTIVITY_PLATFORM_LIST");
  if(!p)return;
  p.dataset.activityDetails="0";
- p.innerHTML='<button type="button" onclick="lexActivityOpen(\'الحظ السعيد\',\'🍀\',\'شارك في فعاليات الحظ داخل المنصة واكتشف المكافآت المتاحة.\')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">🍀 محطة الحظ السعيد<div class="text-xs text-gray-500 mt-1">فعاليات ومكافآت</div></button><button type="button" onclick="lexActivityOpen(\'قاعة الأبراج\',\'♈\',\'استكشف الأبراج والفعاليات الخاصة بها داخل ليكسبريدج.\')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">♈ قاعة الأبراج<div class="text-xs text-gray-500 mt-1">اكتشف برجك</div></button><button type="button" onclick="lexActivityOpen(\'SVIP POWER\',\'👑\',\'مميزات وتجربة العضوية الملكية داخل المنصة.\')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">👑 SVIP POWER<div class="text-xs text-gray-500 mt-1">مميزات خاصة</div></button><button type="button" onclick="lexActivityOpen(\'تخصيص الإطار\',\'🖼️\',\'اختيار وتخصيص إطار الحساب والمظهر الملكي.\')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">🖼️ DIDI LIVE تخصيص إطار<div class="text-xs text-gray-500 mt-1">تخصيص المظهر</div></button><button type="button" onclick="lexActivityOpen(\'متجر DIDI LIVE\',\'🛍️\',\'استعرض الخدمات والمميزات المتاحة في المتجر.\')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">🛍️ متجر DIDI LIVE<div class="text-xs text-gray-500 mt-1">المتجر والخدمات</div></button><button type="button" onclick="lexActivityOpen(\'مليونير DIDI LIVE\',\'💰\',\'قسم خاص بالفعاليات والمميزات المرتبطة بالثروة والهدايا.\')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">💰 مليونير DIDI LIVE<div class="text-xs text-gray-500 mt-1">فعاليات ومميزات</div></button><button type="button" onclick="lexActivityOpen(\'قوانين التطبيق\',\'📜\',\'اطلع على القواعد والإرشادات العامة لاستخدام المنصة.\')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">📜 DIDI LIVE قوانين التطبيق<div class="text-xs text-gray-500 mt-1">القواعد والإرشادات</div></button>';
+ p.innerHTML=
+ '<button type="button" onclick="lexActivityOpen(\'الحظ السعيد\',\'🍀\',\'شارك في فعاليات الحظ واكتشف المكافآت المتاحة.\')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">🍀 محطة الحظ السعيد<div class="text-xs text-gray-500 mt-1">فعاليات ومكافآت</div></button>'+
+ '<button type="button" onclick="lexActivityOpen(\'قاعة الأبراج\',\'♈\',\'استكشف الأبراج والفعاليات الخاصة بها داخل ليكسبريدج.\')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">♈ قاعة الأبراج<div class="text-xs text-gray-500 mt-1">اكتشف برجك</div></button>'+
+ '<button type="button" onclick="lexActivityOpen(\'SVIP POWER\',\'👑\',\'مميزات وتجربة العضوية الملكية داخل المنصة.\')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">👑 SVIP POWER<div class="text-xs text-gray-500 mt-1">مميزات خاصة</div></button>'+
+ '<button type="button" onclick="lexActivityOpen(\'تخصيص الإطار\',\'🖼️\',\'اختيار وتخصيص إطار الحساب والمظهر الملكي.\')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">🖼️ DIDI LIVE تخصيص إطار<div class="text-xs text-gray-500 mt-1">تخصيص المظهر</div></button>'+
+ '<button type="button" onclick="lexActivityOpen(\'متجر DIDI LIVE\',\'🛍️\',\'استعرض الخدمات والمميزات المتاحة في المتجر.\')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">🛍️ متجر DIDI LIVE<div class="text-xs text-gray-500 mt-1">المتجر والخدمات</div></button>'+
+ '<button type="button" onclick="lexActivityOpen(\'مليونير DIDI LIVE\',\'💰\',\'فعاليات ومميزات مرتبطة بالثروة والهدايا.\')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">💰 مليونير DIDI LIVE<div class="text-xs text-gray-500 mt-1">فعاليات ومميزات</div></button>'+
+ '<button type="button" onclick="lexActivityOpen(\'قوانين التطبيق\',\'📜\',\'القواعد والإرشادات العامة لاستخدام المنصة.\')" class="w-full text-right bg-gray-900 border border-yellow-500/20 rounded-2xl p-4 text-yellow-300 active:scale-95">📜 DIDI LIVE قوانين التطبيق<div class="text-xs text-gray-500 mt-1">القواعد والإرشادات</div></button>';
 }
 
 function lexActivityTab(tab){
